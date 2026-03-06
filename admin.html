@@ -1,0 +1,1210 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Admin — LUC\JOSSINET</title>
+<style>
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box;}
+html,body{height:100%;font-family:'Helvetica Neue','Arial',sans-serif;-webkit-font-smoothing:antialiased;background:#f5f5f5;color:#000;}
+
+/* ─── LOGIN ─── */
+#login{
+  position:fixed;inset:0;background:#000;
+  display:flex;align-items:center;justify-content:center;
+  z-index:100;transition:opacity .6s ease;
+}
+#login.out{opacity:0;pointer-events:none;}
+#login-box{display:flex;flex-direction:column;align-items:flex-start;}
+#login-title{font-size:clamp(36px,5vw,72px);font-weight:900;color:#fff;letter-spacing:-.02em;line-height:.9;margin-bottom:6px;}
+#login-sub{font-size:9px;font-weight:700;letter-spacing:.28em;text-transform:uppercase;color:rgba(255,255,255,.3);margin-bottom:48px;}
+.login-field{width:340px;border:2px solid rgba(255,255,255,.3);border-bottom:none;}
+.login-field:last-of-type{border-bottom:2px solid rgba(255,255,255,.3);}
+.login-field input{
+  width:100%;background:transparent;border:none;outline:none;
+  color:#fff;font-size:14px;font-weight:600;letter-spacing:.08em;font-family:inherit;
+  padding:14px 18px;
+}
+.login-field input::placeholder{color:rgba(255,255,255,.2);font-weight:400;}
+#login-btn{
+  width:340px;margin-top:-2px;
+  background:#fff;color:#000;border:2px solid #fff;
+  font-size:11px;font-weight:900;letter-spacing:.22em;text-transform:uppercase;
+  font-family:inherit;padding:14px 18px;cursor:pointer;
+  transition:background .2s,color .2s;
+}
+#login-btn:hover{background:#000;color:#fff;}
+#login-err{margin-top:14px;font-size:9px;font-weight:700;letter-spacing:.2em;text-transform:uppercase;color:#ff0000;opacity:0;transition:opacity .2s;}
+#login-err.show{opacity:1;}
+
+/* ─── PANEL ─── */
+#panel{display:none;min-height:100vh;}
+
+/* HEADER */
+#admin-header{
+  position:sticky;top:0;z-index:50;
+  display:flex;align-items:center;
+  background:#fff;border-bottom:1.5px solid #000;
+  padding:0 40px;height:52px;
+}
+#admin-logo{font-size:11px;font-weight:900;letter-spacing:.14em;text-transform:uppercase;flex-shrink:0;margin-right:40px;}
+#admin-tabs{display:flex;gap:0;flex:1;}
+.tab-btn{
+  background:none;border:none;border-right:1px solid rgba(0,0,0,.1);
+  font-size:10px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;
+  font-family:inherit;padding:0 22px;height:52px;cursor:pointer;
+  color:rgba(0,0,0,.38);transition:color .2s,background .2s;
+  position:relative;
+}
+.tab-btn:hover{color:#000;background:rgba(0,0,0,.02);}
+.tab-btn.active{color:#000;}
+.tab-btn.active::after{
+  content:'';position:absolute;bottom:0;left:0;right:0;height:2px;background:#000;
+}
+#admin-actions{display:flex;gap:10px;margin-left:auto;align-items:center;}
+#save-btn{
+  background:#000;color:#fff;border:none;
+  font-size:10px;font-weight:900;letter-spacing:.18em;text-transform:uppercase;
+  font-family:inherit;padding:10px 22px;cursor:pointer;
+  transition:background .2s;
+}
+#save-btn:hover{background:#333;}
+#reset-btn{
+  background:none;color:rgba(0,0,0,.4);border:1.5px solid rgba(0,0,0,.18);
+  font-size:10px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;
+  font-family:inherit;padding:10px 16px;cursor:pointer;
+  transition:color .2s,border-color .2s;
+}
+#reset-btn:hover{color:#ff0000;border-color:#ff0000;}
+#save-confirm{
+  font-size:9px;font-weight:700;letter-spacing:.15em;text-transform:uppercase;
+  color:#008800;opacity:0;transition:opacity .3s;
+}
+#save-confirm.show{opacity:1;}
+
+/* MAIN CONTENT */
+#admin-main{padding:40px;max-width:1100px;margin:0 auto;}
+
+/* TABS */
+.tab-content{display:none;}
+.tab-content.active{display:block;}
+
+/* PERSO SUB-TABS */
+.perso-tabs{display:flex;gap:0;border-bottom:1px solid rgba(0,0,0,.1);margin-bottom:20px;}
+.perso-tab-btn{background:none;border:none;border-bottom:2px solid transparent;font-size:10px;font-weight:700;letter-spacing:.15em;text-transform:uppercase;font-family:inherit;padding:10px 18px;cursor:pointer;color:rgba(0,0,0,.38);transition:color .15s;margin-bottom:-1px;}
+.perso-tab-btn:hover{color:#000;}
+.perso-tab-btn.active{color:#000;border-bottom-color:#000;}
+.perso-tab-content{display:none;}
+.perso-tab-content.active{display:block;}
+
+/* SECTION HEADERS */
+.section-head{
+  font-size:9px;font-weight:700;letter-spacing:.25em;text-transform:uppercase;
+  color:rgba(0,0,0,.35);border-bottom:1px solid rgba(0,0,0,.08);
+  padding-bottom:10px;margin-bottom:24px;margin-top:48px;
+}
+.section-head:first-child{margin-top:0;}
+
+/* FORM */
+.form-row{display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-bottom:20px;}
+.form-row.full{grid-template-columns:1fr;}
+.form-row.three{grid-template-columns:1fr 1fr 1fr;}
+.form-group{display:flex;flex-direction:column;gap:6px;}
+label{
+  font-size:9px;font-weight:700;letter-spacing:.2em;text-transform:uppercase;
+  color:rgba(0,0,0,.4);
+}
+input[type=text],input[type=email],input[type=tel],textarea,select{
+  width:100%;background:#fff;border:1.5px solid rgba(0,0,0,.12);
+  font-size:13px;font-weight:400;font-family:inherit;color:#000;
+  padding:10px 14px;outline:none;
+  transition:border-color .2s;
+  resize:vertical;
+}
+input:focus,textarea:focus{border-color:#000;background:#fff;}
+textarea{min-height:90px;line-height:1.7;}
+textarea.tall{min-height:200px;}
+textarea.xtall{min-height:360px;}
+.hint{font-size:9px;color:rgba(0,0,0,.3);margin-top:3px;line-height:1.5;}
+
+/* ENTRY CARD */
+.entry-card{
+  background:#fff;border:1.5px solid rgba(0,0,0,.1);
+  padding:24px;margin-bottom:12px;
+}
+.entry-card-head{
+  display:flex;align-items:center;justify-content:space-between;
+  margin-bottom:20px;
+}
+.entry-num{font-size:9px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:rgba(0,0,0,.3);}
+.btn-remove{
+  font-size:9px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;
+  background:none;border:none;cursor:pointer;color:rgba(0,0,0,.3);font-family:inherit;
+  transition:color .2s;
+}
+.btn-remove:hover{color:#ff0000;}
+.btn-add{
+  font-size:9px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;
+  background:none;border:1.5px solid rgba(0,0,0,.18);padding:10px 18px;
+  cursor:pointer;font-family:inherit;margin-bottom:32px;
+  transition:border-color .2s,color .2s;display:inline-block;
+}
+.btn-add:hover{border-color:#000;color:#000;}
+
+/* DRAG HANDLE */
+.drag-handle{cursor:grab;font-size:16px;color:rgba(0,0,0,.22);padding:0 6px 0 0;user-select:none;line-height:1;}
+.drag-handle:hover{color:rgba(0,0,0,.55);}
+.entry-card.dragging{opacity:.35;border-style:dashed;}
+
+/* RICHTEXT EDITOR */
+.richtext-wrap{display:flex;flex-direction:column;border:1.5px solid rgba(0,0,0,.12);background:#fff;transition:border-color .2s;}
+.richtext-wrap:focus-within{border-color:#000;}
+.richtext-toolbar{display:flex;gap:0;border-bottom:1.5px solid rgba(0,0,0,.08);padding:6px 8px;gap:4px;}
+.rt-btn{
+  background:none;border:1px solid rgba(0,0,0,.1);
+  width:28px;height:28px;font-size:12px;font-weight:700;
+  cursor:pointer;font-family:inherit;color:rgba(0,0,0,.55);
+  transition:background .15s,color .15s;
+  display:flex;align-items:center;justify-content:center;
+}
+.rt-btn:hover{background:#000;color:#fff;border-color:#000;}
+.richtext-body{
+  min-height:300px;padding:12px 14px;outline:none;
+  font-size:13px;font-family:inherit;color:#000;line-height:1.7;
+}
+.richtext-body p{margin-bottom:12px;}
+.richtext-body p:last-child{margin-bottom:0;}
+
+/* PHOTO */
+#photo-dropzone{
+  border:2px dashed rgba(0,0,0,.15);
+  padding:40px;text-align:center;
+  cursor:pointer;transition:border-color .2s,background .2s;
+  background:#fff;margin-bottom:16px;
+}
+#photo-dropzone:hover{border-color:#000;background:rgba(0,0,0,.01);}
+#photo-dropzone p{font-size:12px;color:rgba(0,0,0,.35);margin-bottom:6px;}
+#photo-dropzone strong{font-size:13px;font-weight:700;color:#000;}
+#photo-input{display:none;}
+#photo-preview{max-width:300px;margin-top:16px;border:1px solid rgba(0,0,0,.08);display:none;}
+#photo-preview img{width:100%;display:block;filter:grayscale(20%);}
+
+/* SITE LINK */
+#site-link{
+  display:inline-flex;align-items:center;gap:8px;
+  font-size:10px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;
+  color:rgba(0,0,0,.4);text-decoration:none;border:1.5px solid rgba(0,0,0,.12);
+  padding:8px 16px;transition:color .2s,border-color .2s;
+}
+#site-link:hover{color:#000;border-color:#000;}
+</style>
+</head>
+<body>
+
+<!-- ════ LOGIN ════ -->
+<div id="login">
+  <div id="login-box">
+    <div id="login-title">ADMIN</div>
+    <div id="login-sub">LUC\JOSSINET</div>
+    <div class="login-field"><input type="text" id="user-input" placeholder="identifiant" autocomplete="off" /></div>
+    <div class="login-field"><input type="password" id="pass-input" placeholder="mot de passe" /></div>
+    <button id="login-btn" onclick="doLogin()">CONNEXION</button>
+    <div id="login-err">Identifiants incorrects</div>
+  </div>
+</div>
+
+<!-- ════ PANEL ════ -->
+<div id="panel">
+  <header id="admin-header">
+    <div id="admin-logo">LUC\JOSSINET — Admin</div>
+    <div id="admin-tabs">
+      <button class="tab-btn active" onclick="showTab('lettre',this)">LETTRE</button>
+      <button class="tab-btn" onclick="showTab('cv',this)">CV</button>
+      <button class="tab-btn" onclick="showTab('contact',this)">CONTACT</button>
+    </div>
+    <div id="admin-actions">
+      <span id="save-confirm">Sauvegardé ✓</span>
+      <button id="reset-btn" onclick="resetContent()">Réinitialiser</button>
+      <button id="save-btn" onclick="saveAll()">Sauvegarder</button>
+    </div>
+  </header>
+
+  <div id="admin-main">
+
+    <!-- ════════ LETTRE ════════ -->
+    <div id="tab-lettre" class="tab-content active">
+
+      <div class="section-head">Destinataire &amp; Signature</div>
+      <div class="form-row three">
+        <div class="form-group">
+          <label>Destinataire</label>
+          <textarea id="l-recipient" placeholder="Madame Delbasty,&#10;Messieurs Denis et Gozet," rows="2" style="resize:vertical;min-height:48px;"></textarea>
+          <span class="hint">Saut de ligne automatique avec Enter dans le champ</span>
+        </div>
+        <div class="form-group">
+          <label>Signature — Nom</label>
+          <input type="text" id="l-sign-name" />
+        </div>
+        <div class="form-group">
+          <label>Signature — Contact</label>
+          <input type="text" id="l-sign-contact" placeholder="email · téléphone" />
+        </div>
+      </div>
+
+      <div class="section-head">Corps de la lettre</div>
+      <div class="form-row full">
+        <div class="form-group">
+          <label>Texte de la lettre</label>
+          <div class="richtext-wrap">
+            <div class="richtext-toolbar">
+              <button class="rt-btn" onclick="fmt('bold')" title="Gras"><b>G</b></button>
+              <button class="rt-btn" onclick="fmt('italic')" title="Italique"><i>I</i></button>
+              <button class="rt-btn" onclick="fmt('underline')" title="Souligné"><u>S</u></button>
+            </div>
+            <div id="l-body" class="richtext-body" contenteditable="true" spellcheck="true"></div>
+          </div>
+          <span class="hint">Sélectionnez du texte puis cliquez G / I / S pour le formater · Entrée = nouveau paragraphe</span>
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label>Citation 1 <span style="font-weight:400;text-transform:none;letter-spacing:0">(après le 1er paragraphe)</span></label>
+          <textarea id="l-q1" placeholder="L'ADN de LA\PAC correspond exactement à ce que je recherche."></textarea>
+        </div>
+        <div class="form-group">
+          <label>Citation finale <span style="font-weight:400;text-transform:none;letter-spacing:0">(avant la signature)</span></label>
+          <textarea id="l-q2" placeholder="De quoi seront faits les 50 ans + 2 ?"></textarea>
+        </div>
+      </div>
+
+      <div class="section-head">Personnalisation par destinataire</div>
+      <div class="perso-tabs">
+        <button class="perso-tab-btn active" onclick="showPersoTab('laurence',this)">Laurence Delbasty</button>
+        <button class="perso-tab-btn" onclick="showPersoTab('valentin',this)">Valentin Gozet</button>
+        <button class="perso-tab-btn" onclick="showPersoTab('jerome',this)">Jérôme Denis</button>
+      </div>
+
+      <div id="perso-laurence" class="perso-tab-content active">
+        <div class="form-row"><div class="form-group"><label>Destinataire</label><input type="text" id="lp-laurence-recipient" placeholder="Madame Delbasty," /></div></div>
+        <div class="form-row full"><div class="form-group">
+          <label>Corps <span style="font-weight:400;text-transform:none;letter-spacing:0">(laisser vide = version principale + substitutions auto)</span></label>
+          <div class="richtext-wrap"><div class="richtext-toolbar"><button class="rt-btn" onclick="fmt('bold')"><b>G</b></button><button class="rt-btn" onclick="fmt('italic')"><i>I</i></button><button class="rt-btn" onclick="fmt('underline')"><u>S</u></button></div><div id="lp-laurence-body" class="richtext-body" contenteditable="true" spellcheck="true"></div></div>
+        </div></div>
+      </div>
+
+      <div id="perso-valentin" class="perso-tab-content">
+        <div class="form-row"><div class="form-group"><label>Destinataire</label><input type="text" id="lp-valentin-recipient" placeholder="Monsieur Gozet," /></div></div>
+        <div class="form-row full"><div class="form-group">
+          <label>Corps <span style="font-weight:400;text-transform:none;letter-spacing:0">(laisser vide = version principale + substitutions auto)</span></label>
+          <div class="richtext-wrap"><div class="richtext-toolbar"><button class="rt-btn" onclick="fmt('bold')"><b>G</b></button><button class="rt-btn" onclick="fmt('italic')"><i>I</i></button><button class="rt-btn" onclick="fmt('underline')"><u>S</u></button></div><div id="lp-valentin-body" class="richtext-body" contenteditable="true" spellcheck="true"></div></div>
+        </div></div>
+      </div>
+
+      <div id="perso-jerome" class="perso-tab-content">
+        <div class="form-row"><div class="form-group"><label>Destinataire</label><input type="text" id="lp-jerome-recipient" placeholder="Monsieur Denis," /></div></div>
+        <div class="form-row full"><div class="form-group">
+          <label>Corps <span style="font-weight:400;text-transform:none;letter-spacing:0">(laisser vide = version principale + substitutions auto)</span></label>
+          <div class="richtext-wrap"><div class="richtext-toolbar"><button class="rt-btn" onclick="fmt('bold')"><b>G</b></button><button class="rt-btn" onclick="fmt('italic')"><i>I</i></button><button class="rt-btn" onclick="fmt('underline')"><u>S</u></button></div><div id="lp-jerome-body" class="richtext-body" contenteditable="true" spellcheck="true"></div></div>
+        </div></div>
+      </div>
+
+      <div class="section-head">Côté droit</div>
+      <div class="form-row full" style="margin-bottom:24px;">
+        <div class="form-group">
+          <label>Titre de la liste</label>
+          <input type="text" id="l-love-header" placeholder="Mon amour pour LA\PAC" />
+        </div>
+      </div>
+      <div id="love-list-admin"></div>
+      <button class="btn-add" onclick="addLoveItem()">+ Ajouter un item</button>
+
+    </div>
+
+    <!-- ════════ CV ════════ -->
+    <div id="tab-cv" class="tab-content">
+
+      <div class="section-head">En-tête</div>
+      <div class="form-row">
+        <div class="form-group">
+          <label>Nom</label>
+          <input type="text" id="cv-name-val" placeholder="LUC JOSSINET" />
+        </div>
+        <div class="form-group">
+          <label>Rôle</label>
+          <input type="text" id="cv-role-val" />
+        </div>
+      </div>
+
+      <div class="section-head">Expériences professionnelles</div>
+      <div id="exp-list"></div>
+      <button class="btn-add" onclick="addExp()">+ Ajouter une expérience</button>
+
+      <div class="section-head">Bénévolat</div>
+      <div id="bene-list"></div>
+      <button class="btn-add" onclick="addBene()">+ Ajouter un bénévolat</button>
+
+      <div class="section-head">Projets</div>
+      <div id="projet-list"></div>
+      <button class="btn-add" onclick="addProjet()">+ Ajouter un projet</button>
+
+      <div class="section-head">Formations</div>
+      <div id="edu-list"></div>
+      <button class="btn-add" onclick="addEdu()">+ Ajouter une formation</button>
+
+      <div class="section-head">Certifications</div>
+      <div id="cert-list"></div>
+      <button class="btn-add" onclick="addCert()">+ Ajouter une certification</button>
+
+      <div class="section-head">Compétences</div>
+      <div id="skills-list"></div>
+      <button class="btn-add" onclick="addSkillCat()">+ Ajouter une catégorie</button>
+
+    </div>
+
+    <!-- ════════ CONTACT ════════ -->
+    <div id="tab-contact" class="tab-content">
+
+      <div class="section-head">Photo</div>
+      <div id="photo-dropzone" onclick="document.getElementById('photo-input').click()">
+        <p>Cliquer pour choisir une image</p>
+        <strong>JPG, PNG — portrait recommandé</strong>
+      </div>
+      <input type="file" id="photo-input" accept="image/*" onchange="handlePhoto(this)" />
+      <div id="photo-preview"><img id="photo-img" src="" alt="" /></div>
+
+      <div class="section-head">Titre principal</div>
+      <div class="form-row full">
+        <div class="form-group">
+          <label>Titre</label>
+          <textarea id="ct-title" placeholder="SINCE 2026,&#10;LUC JOSSINET&#10;WANTS TO BE&#10;PART OF IT."></textarea>
+          <span class="hint">Chaque ligne devient une ligne affichée</span>
+        </div>
+      </div>
+      <div class="section-head">Coordonnées</div>
+      <div id="contact-infos-admin"></div>
+      <button class="btn-add" onclick="addContactInfo()">+ Ajouter une ligne</button>
+
+      <div class="section-head">Informations gauche (sous la photo)</div>
+      <div id="contact-left-infos-admin"></div>
+      <button class="btn-add" onclick="addLeftInfo()">+ Ajouter une ligne</button>
+
+      <div class="section-head">Citation</div>
+      <div class="form-row">
+        <div class="form-group">
+          <label>Texte</label>
+          <textarea id="ct-quote"></textarea>
+          <span class="hint">Écrivez la citation sans guillemets, ils s'ajoutent automatiquement</span>
+        </div>
+        <div class="form-group">
+          <label>Auteur</label>
+          <input type="text" id="ct-quote-author" placeholder="— LA\PAC" />
+        </div>
+      </div>
+
+    </div>
+
+  </div><!-- admin-main -->
+
+  <div style="padding:20px 40px 48px;border-top:1px solid rgba(0,0,0,.06);margin-top:40px;">
+    <a href="lapacxlucjossinet.html" id="site-link" target="_blank">← Voir le site</a>
+  </div>
+</div>
+
+<script>
+/* ─────────────────────────────────────
+   DEFAULTS
+───────────────────────────────────── */
+const DEFAULTS = {
+  lettre: {
+    recipient: 'Madame Delbasty,\nMessieurs Denis et Gozet,',
+    body: '<p>Il y a un peu plus d\'un an, j\'avais eu le privilège d\'être reçu dans vos locaux par Laurence Delbasty et Valentin. Cette rencontre m\'a profondément marqué. Nous avions échangé sur ma vision de LA\\PAC et de ses filiales, sur la communication digitale, la refonte du site web, et sur des talents que je suivais depuis quelques années — Colin Solal Cardo, Quentin Deronzier. À l\'époque, je venais pour la production. Aujourd\'hui, je reviens pour la communication.</p><p>Depuis cet entretien, ma veille sur LA\\PAC n\'a pas cessé. J\'ai lu le livre des 50 ans, que Laurence avait eu la gentillesse de m\'envoyer. J\'ai visionné <em>Urgences 911</em> d\'Arthur King — cette économie de cadre qui dit tout. La campagne <em>Upgrade to French class</em> de Quentin Deronzier, dont la post-production vertigineuse m\'a toujours fasciné. J\'ai suivi avec impatience la naissance de LE\\PAC née du partenariat avec Arts &amp; Sciences, et les clips de Very/Content signés Emile Moutaud — R+V et Love\'n\'Tendresse — où la performance supplante le budget avec une efficacité redoutable.</p><p>Sur le terrain, j\'ai beaucoup appris. Coordinateur de production pour des projets aux côtés de Numéro Magazine, Louis Vuitton et lors d\'Art Basel, puis chez Sixtine Paris où j\'ai géré la communication interne, les réseaux sociaux et les sites web des réalisateurs — j\'ai compris que raconter le travail d\'une maison comme la vôtre requiert autant de rigueur créative que les productions elles-mêmes.</p><p>Major de promotion de mon MBA Communication et Production Audiovisuelle à l\'EFAP Paris, certifié Google Analytics 4, je maîtrise les outils qui font vivre une présence numérique : stratégie éditoriale, création de contenus, veille, analyse de données. Mais c\'est votre univers — l\'image, le talent, l\'exigence — qui donne à ces compétences leur vrai sens.</p><p>LA\\PAC fête ses 50 ans + 1. Je vous pose cette question avec toute la sincérité de ma candidature :</p>',
+    quote1: "L'ADN de LA\\PAC, ainsi que celle des collaborateurs qui la constituent, correspond exactement à ce que je recherche dans le milieu professionnel.",
+    quote2: "De quoi seront faits les 53 ans de LA\\PAC ?\nJe souhaite en être.",
+    signName: "Luc Jossinet",
+    signContact: "lucjossinet@gmail.com · 07 77 93 00 72"
+  },
+  loveHeader: "Mon amour pour LA\\PAC",
+  loveList: [
+    {title:'QUENTIN DERONZIER', sub:'Upgrade to French class · The Weeknd · Futurisme & post-production'},
+    {title:'COLIN SOLAL CARDO', sub:'La Vita Nuova · Christine and the Queens · Pellicule & grain'},
+    {title:'APPLE 1984 — RIDLEY SCOTT', sub:'La publicité qui a défini l\'image comme arme symbolique'},
+    {title:'VERY\\CONTENT', sub:'R+V · Love\'n\'Tendresse · Performance > budget'},
+    {title:'LE\\PAC × ARTS & SCIENCES', sub:'Partenariat franco-américain · Productions musicales à venir'},
+    {title:'ARTHUR KING', sub:'Urgences 911 · Here (Christine × Booba) · Minimalisme percutant'},
+    {title:'LES 50 ANS DE LA\\PAC', sub:'Le livre envoyé par Laurence · L\'histoire d\'une maison qui se réinvente'},
+    {title:'SAM BROWN', sub:'Rolling in the Deep · Oh My God · Adèle'}
+  ],
+  photo: null,
+  cv: {
+    name: "LUC JOSSINET",
+    role: "Community Manager · Assistant de Communication",
+    experiences: [
+      { date:"2024 — Présent", title:"Coordinateur de Production", org:"Freelance — Paris · Production éditoriale et publicitaire luxe", desc:"Responsable et référent terrain lors de tournages et de shootings photo. Coordination logistique entre équipes techniques, prestataires et clients. Gestion des sites web et portfolios des réalisateurs. Benchmarking et veille réseaux sociaux.", tags:["Numéro Magazine × Louis Vuitton","Art Basel","Pierre Niney","Noémie Merlant"] },
+      { date:"Avr. — Oct. 2023 · 6 mois", title:"Assistant & Coordinateur Production / Communication", org:"Sixtine Paris · Pub TV, digital, print", desc:"Gestion de projets audiovisuels (suivi financier, logistique, humain). Communication interne : comptes-rendus, base de données 700+ vidéos de réalisateurs. Création de supports de communication et mise à jour des sites web. Benchmarking réseaux sociaux.", tags:["Communication interne","Réseaux sociaux","700+ vidéos cataloguées"] },
+      { date:"Oct. 2020 — Jan. 2021 · 4 mois", title:"Assistant Coordinateur Production / Communication", org:"GnGn Inc — Tokyo, Japon (télétravail)", desc:"Social Media Manager : gestion des réseaux sociaux. Développement site web, montage vidéo. Environnement multiculturel, communication en anglais.", tags:["Social Media Manager","Montage vidéo","Développement web"] }
+    ],
+    education: [
+      { date:"2022 — 2023", title:"MBA Communication et Production Audiovisuelle", org:"EFAP Paris — BAC +5", desc:"Major de promotion.", tags:["Major de Promotion"] },
+      { date:"2022", title:"Étude de la Communication des Médias", org:"EFAP Bordeaux & IHECS Bruxelles — BAC +4", desc:"", tags:[] },
+      { date:"2018 — 2020", title:"BTS Métiers de l'Audiovisuel — Gestion de Production", org:"Saint-Genès La Salle — Bordeaux — BAC +2", desc:"", tags:[] },
+      { date:"2017 — 2018", title:"Mise à Niveau Cinéma Audiovisuel (M.A.N.C.A.V.)", org:"Saint-Genès La Salle — Bordeaux", desc:"", tags:[] }
+    ],
+    certifications: [
+      { date:"Jan. 2026", title:"Certification Google Analytics 4 (GA4)", org:"Google · Semrush Academy", desc:"", tags:["Certifié"] }
+    ],
+    benevole: [],
+    projets: [
+      {
+        date: 'Déc. 2022',
+        title: 'Dans l\'ombre de Jinshuai — Documentaire court-métrage',
+        org: 'Auteur et Réalisateur',
+        desc: 'Gagnant du concours de court-métrage du MBA Communication et Production Audiovisuelle à l\'EFAP en 2022.\nDiffusion lors des portes ouvertes de l\'École Nationale Supérieure des Beaux-Arts de Paris en 2023.\nFinaliste du concours jeunes réalisateurs de la plateforme de streaming SPICEE en 2023.\nSélectionné à la 11ᵉ édition du Festival Brèves d\'Images (2023) · 14ᵉ édition du FESTCESAG, Îles Baléares (2023) · 11ᵉ édition du festival d\'Amnesty International "Au Cinéma pour les Droits Humains" (2024) · 25ᵉ édition du SHORTS Trinationales Filmfestival Offenburg, Allemagne (2024) · 6ᵉ édition du festival Les couleurs du court (2024) · 17ᵉ édition du Big Water Film Festival, Ashland, Wisconsin, États-Unis (2025).',
+        tags: ['Court-métrage', 'Réalisateur', '9 sélections festival']
+      },
+      {
+        date: '2023',
+        title: 'Islande — Aurores boréales',
+        org: 'Projet photographique personnel',
+        desc: 'Série photographique réalisée en Islande au cœur des paysages nordiques. Capturer l\'aurore boréale dans ses formes les plus intenses — nappes de lumière verte et violette au-dessus des fjords, plaines de lave et lacs glaciaires. Une exploration visuelle de la lumière naturelle à l\'état pur, entre silence arctique et forces géologiques.',
+        tags: ['Photographie', 'Islande', 'Aurores boréales']
+      },
+      {
+        date: '2020 — présent',
+        title: 'Nature & Paysage',
+        org: 'Projet photographique personnel',
+        desc: 'Exploration photographique des paysages naturels à travers l\'Europe et au-delà. Travail sur la lumière rasante, les textures minérales et végétales, les lignes d\'horizon et les ciels dramatiques. Une pratique nourrie par les voyages, en dialogue constant avec le regard cinématographique développé en production audiovisuelle.',
+        tags: ['Photographie', 'Paysage', 'Nature']
+      }
+    ],
+    skills: [
+      {name:'Communication & Contenus', items:['Stratégie éditoriale','Storytelling','Planning éditorial','Veille & Benchmark']},
+      {name:'Outils & Digital', items:['Photoshop','Premiere Pro','Canva','InDesign','Google Analytics 4','SEO','HTML / CSS']},
+      {name:'Langues', items:['Français','Anglais','Mandarin']}
+    ]
+  },
+  contact: {
+    title: "SINCE 2026,\nLUC JOSSINET\nWANTS TO BE\nPART OF IT.",
+    infos: [
+      {label:'Email', value:'lucjossinet@gmail.com'},
+      {label:'Tél.', value:'07 77 93 00 72'},
+      {label:'LinkedIn', value:'linkedin.com/in/lucjossinet'}
+    ],
+    quote: "Talented people working together produce great work.",
+    quoteAuthor: "— LA\\PAC"
+  }
+};
+
+/* ─────────────────────────────────────
+   AUTH
+───────────────────────────────────── */
+function doLogin() {
+  const u = document.getElementById('user-input').value;
+  const p = document.getElementById('pass-input').value;
+  const err = document.getElementById('login-err');
+  if (u === 'admin' && p === 'admin') {
+    document.getElementById('login').classList.add('out');
+    setTimeout(() => {
+      document.getElementById('login').style.display = 'none';
+      document.getElementById('panel').style.display = 'block';
+      loadForm();
+    }, 650);
+  } else {
+    err.classList.add('show');
+    document.getElementById('pass-input').value = '';
+    setTimeout(() => err.classList.remove('show'), 2500);
+  }
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+  ['user-input','pass-input'].forEach(id => {
+    document.getElementById(id).addEventListener('keydown', e => {
+      if (e.key === 'Enter') doLogin();
+    });
+  });
+});
+
+/* ─────────────────────────────────────
+   DATA
+───────────────────────────────────── */
+function getData() {
+  const raw = localStorage.getItem('lj_content');
+  if (!raw) return JSON.parse(JSON.stringify(DEFAULTS));
+  try {
+    const stored = JSON.parse(raw);
+    const d = JSON.parse(JSON.stringify(DEFAULTS));
+    if (stored.lettre) Object.assign(d.lettre, stored.lettre);
+    if (stored.loveHeader !== undefined) d.loveHeader = stored.loveHeader;
+    if (stored.loveList) d.loveList = stored.loveList;
+    if (stored.photo) d.photo = stored.photo;
+    if (stored.cv) {
+      if (stored.cv.name !== undefined) d.cv.name = stored.cv.name;
+      if (stored.cv.role !== undefined) d.cv.role = stored.cv.role;
+      if (stored.cv.experiences) d.cv.experiences = stored.cv.experiences;
+      if (stored.cv.education) d.cv.education = stored.cv.education;
+      if (stored.cv.certifications) d.cv.certifications = stored.cv.certifications;
+      if (stored.cv.benevole) d.cv.benevole = stored.cv.benevole;
+      if (stored.cv.projets) d.cv.projets = stored.cv.projets;
+      if (stored.cv.skills) d.cv.skills = stored.cv.skills;
+      else if (stored.cv.skillsComm) {
+        d.cv.skills = [
+          {name:'Communication & Contenus', items:stored.cv.skillsComm||[]},
+          {name:'Outils & Digital', items:stored.cv.skillsOutils||[]},
+          {name:'Langues', items:stored.cv.skillsLangues||[]}
+        ].filter(c => c.items.length);
+      }
+    }
+    if (stored.contact) {
+      Object.assign(d.contact, stored.contact);
+      // Convert old format (email/tel/linkedin fields → infos array)
+      if (!stored.contact.infos && (stored.contact.email || stored.contact.tel || stored.contact.linkedin)) {
+        d.contact.infos = [
+          stored.contact.email && {label:'Email', value:stored.contact.email},
+          stored.contact.tel && {label:'Tél.', value:stored.contact.tel},
+          stored.contact.linkedin && {label:'LinkedIn', value:stored.contact.linkedin}
+        ].filter(Boolean);
+      }
+    }
+    return d;
+  } catch(e) { return JSON.parse(JSON.stringify(DEFAULTS)); }
+}
+
+/* ─────────────────────────────────────
+   LOAD FORM
+───────────────────────────────────── */
+function loadForm() {
+  const d = getData();
+  const L = d.lettre;
+
+  document.getElementById('l-recipient').value = L.recipient || '';
+  // Richtext body (contenteditable)
+  const bodyEl = document.getElementById('l-body');
+  if (L.body) {
+    // If it looks like HTML (from contenteditable), set directly
+    if (L.body.includes('<p>') || L.body.includes('<b>') || L.body.includes('<em>')) {
+      bodyEl.innerHTML = L.body;
+    } else if (L.body.includes('\n')) {
+      // Old plain text format with double newlines
+      const paras = L.body.split(/\n\n+/).map(p => p.trim()).filter(Boolean);
+      bodyEl.innerHTML = paras.map(p => `<p>${p.replace(/\n/g,'<br>')}</p>`).join('');
+    } else {
+      bodyEl.innerHTML = '<p>' + L.body + '</p>';
+    }
+  } else if (L.p1) {
+    // Legacy p1-p5 format
+    const parts = [L.p1,L.p2,L.p3,L.p4,L.p5].filter(Boolean);
+    bodyEl.innerHTML = parts.map(p => `<p>${p}</p>`).join('');
+  }
+  document.getElementById('l-q1').value = L.quote1 || '';
+  document.getElementById('l-q2').value = L.quote2 || '';
+  document.getElementById('l-sign-name').value = L.signName || '';
+  document.getElementById('l-sign-contact').value = L.signContact || '';
+  document.getElementById('l-love-header').value = d.loveHeader || '';
+
+  // Personnalisation par destinataire
+  ['laurence','valentin','jerome'].forEach(u => {
+    const p = d['lettre_' + u] || {};
+    document.getElementById('lp-' + u + '-recipient').value = p.recipient || '';
+    loadPersoBody('lp-' + u + '-body', p.body || '');
+  });
+
+  renderLoveList(d.loveList || []);
+
+  // Photo
+  if (d.photo) {
+    document.getElementById('photo-img').src = d.photo;
+    document.getElementById('photo-preview').style.display = 'block';
+  }
+
+  // CV
+  const C = d.cv;
+  document.getElementById('cv-name-val').value = C.name || '';
+  document.getElementById('cv-role-val').value = C.role || '';
+  renderExpList(C.experiences || []);
+  renderBeneList(C.benevole || []);
+  renderProjetList(C.projets || []);
+  renderEduList(C.education || []);
+  renderCertList(C.certifications || []);
+  renderSkillList(C.skills || []);
+
+  // Contact
+  const CT = d.contact;
+  document.getElementById('ct-title').value = CT.title || '';
+  renderContactInfos(CT.infos || []);
+  renderLeftInfos(CT.leftInfos || []);
+  document.getElementById('ct-quote').value = CT.quote || '';
+  document.getElementById('ct-quote-author').value = CT.quoteAuthor || '';
+}
+
+/* ─────────────────────────────────────
+   LOVE LIST
+───────────────────────────────────── */
+function loveItemHTML(item, i) {
+  return `<div class="entry-card" id="love-${i}">
+    <div class="entry-card-head">
+      <span class="entry-num">Item ${i+1}</span>
+      <button class="btn-remove" onclick="removeLoveItem(${i})">Supprimer</button>
+    </div>
+    <div class="form-row">
+      <div class="form-group">
+        <label>Titre</label>
+        <input type="text" class="love-title" value="${escHTML(item.title||'')}" placeholder="NOM DU RÉALISATEUR" />
+      </div>
+      <div class="form-group">
+        <label>Sous-titre / détail</label>
+        <input type="text" class="love-sub" value="${escHTML(item.sub||'')}" placeholder="Film · Projet · Description" />
+      </div>
+    </div>
+    <div class="form-row">
+      <div class="form-group">
+        <label>Visuel</label>
+        <input type="text" class="love-media" value="${escHTML(item.media||'')}" placeholder="https://vimeo.com/… ou videos/monfichier.mp4" />
+        <span class="hint">URL Vimeo, YouTube ou fichier local (.mp4, .webm…) — autoplay muet au survol</span>
+      </div>
+      <div class="form-group" style="max-width:180px;">
+        <label>Timecode départ</label>
+        <input type="text" class="love-start" value="${escHTML(item.mediaStart||'')}" placeholder="ex: 0:45 ou 45" />
+        <span class="hint">Départ en secondes ou MM:SS</span>
+      </div>
+    </div>
+  </div>`;
+}
+
+function renderLoveList(items) {
+  document.getElementById('love-list-admin').innerHTML = items.map(loveItemHTML).join('');
+}
+
+function addLoveItem() {
+  const items = collectLoveList();
+  items.push({title:'', sub:''});
+  renderLoveList(items);
+}
+
+function removeLoveItem(i) {
+  const items = collectLoveList();
+  items.splice(i, 1);
+  renderLoveList(items);
+}
+
+function collectLoveList() {
+  return [...document.querySelectorAll('#love-list-admin .entry-card')].map(card => ({
+    title: card.querySelector('.love-title').value,
+    sub:   card.querySelector('.love-sub').value,
+    media:      card.querySelector('.love-media')?.value || '',
+    mediaStart: card.querySelector('.love-start')?.value || ''
+  }));
+}
+
+/* ─────────────────────────────────────
+   EXP / EDU
+───────────────────────────────────── */
+function expHTML(e, i) {
+  return `<div class="entry-card" draggable="true" id="exp-${i}">
+    <div class="entry-card-head">
+      <span class="drag-handle">⠿</span><span class="entry-num">Expérience ${i+1}</span>
+      <button class="btn-remove" onclick="removeExp(${i})">Supprimer</button>
+    </div>
+    <div class="form-row three">
+      <div class="form-group"><label>Dates</label><input type="text" class="exp-date" value="${escHTML(e.date||'')}" /></div>
+      <div class="form-group"><label>Titre du poste</label><input type="text" class="exp-title" value="${escHTML(e.title||'')}" /></div>
+      <div class="form-group"><label>Entreprise</label><input type="text" class="exp-org" value="${escHTML(e.org||'')}" /></div>
+    </div>
+    <div class="form-row full">
+      <div class="form-group"><label>Description</label><textarea class="exp-desc">${escHTML(e.desc||'')}</textarea></div>
+    </div>
+    <div class="form-row full">
+      <div class="form-group">
+        <label>Tags</label>
+        <input type="text" class="exp-tags" value="${escHTML((e.tags||[]).join(', '))}" />
+        <span class="hint">Séparer les tags par des virgules</span>
+      </div>
+    </div>
+  </div>`;
+}
+
+function eduHTML(e, i) {
+  return `<div class="entry-card" draggable="true" id="edu-${i}">
+    <div class="entry-card-head">
+      <span class="drag-handle">⠿</span><span class="entry-num">Formation ${i+1}</span>
+      <button class="btn-remove" onclick="removeEdu(${i})">Supprimer</button>
+    </div>
+    <div class="form-row three">
+      <div class="form-group"><label>Dates</label><input type="text" class="edu-date" value="${escHTML(e.date||'')}" /></div>
+      <div class="form-group"><label>Diplôme / Certification</label><input type="text" class="edu-title" value="${escHTML(e.title||'')}" /></div>
+      <div class="form-group"><label>Établissement</label><input type="text" class="edu-org" value="${escHTML(e.org||'')}" /></div>
+    </div>
+    <div class="form-row">
+      <div class="form-group"><label>Description (optionnel)</label><textarea class="edu-desc">${escHTML(e.desc||'')}</textarea></div>
+      <div class="form-group">
+        <label>Tags</label>
+        <input type="text" class="edu-tags" value="${escHTML((e.tags||[]).join(', '))}" />
+        <span class="hint">Séparer par des virgules</span>
+      </div>
+    </div>
+  </div>`;
+}
+
+function renderExpList(exps) {
+  document.getElementById('exp-list').innerHTML = exps.map(expHTML).join('');
+  makeSortable('exp-list');
+}
+function renderEduList(edus) {
+  document.getElementById('edu-list').innerHTML = edus.map(eduHTML).join('');
+  makeSortable('edu-list');
+}
+
+function addExp() {
+  const d = collectCVData();
+  d.experiences.push({date:'',title:'',org:'',desc:'',tags:[]});
+  renderExpList(d.experiences);
+}
+function removeExp(i) {
+  const d = collectCVData();
+  d.experiences.splice(i,1);
+  renderExpList(d.experiences);
+}
+function addEdu() {
+  const d = collectCVData();
+  d.education.push({date:'',title:'',org:'',desc:'',tags:[]});
+  renderEduList(d.education);
+}
+function removeEdu(i) {
+  const d = collectCVData();
+  d.education.splice(i,1);
+  renderEduList(d.education);
+}
+
+function certHTML(e, i) {
+  return `<div class="entry-card" draggable="true" id="cert-${i}">
+    <div class="entry-card-head">
+      <span class="drag-handle">⠿</span><span class="entry-num">Certification ${i+1}</span>
+      <button class="btn-remove" onclick="removeCert(${i})">Supprimer</button>
+    </div>
+    <div class="form-row three">
+      <div class="form-group"><label>Date</label><input type="text" class="edu-date" value="${escHTML(e.date||'')}" /></div>
+      <div class="form-group"><label>Titre</label><input type="text" class="edu-title" value="${escHTML(e.title||'')}" /></div>
+      <div class="form-group"><label>Organisme</label><input type="text" class="edu-org" value="${escHTML(e.org||'')}" /></div>
+    </div>
+    <div class="form-row">
+      <div class="form-group"><label>Description (optionnel)</label><textarea class="edu-desc">${escHTML(e.desc||'')}</textarea></div>
+      <div class="form-group">
+        <label>Tags</label>
+        <input type="text" class="edu-tags" value="${escHTML((e.tags||[]).join(', '))}" />
+        <span class="hint">Séparer par des virgules</span>
+      </div>
+    </div>
+  </div>`;
+}
+function renderCertList(certs) {
+  document.getElementById('cert-list').innerHTML = certs.map(certHTML).join('');
+  makeSortable('cert-list');
+}
+function addCert() {
+  const d = collectCVData();
+  d.certifications.push({date:'',title:'',org:'',desc:'',tags:[]});
+  renderCertList(d.certifications);
+}
+function removeCert(i) {
+  const d = collectCVData();
+  d.certifications.splice(i,1);
+  renderCertList(d.certifications);
+}
+
+function beneHTML(e, i) {
+  return `<div class="entry-card" draggable="true" id="bene-${i}">
+    <div class="entry-card-head">
+      <span class="drag-handle">⠿</span><span class="entry-num">Bénévolat ${i+1}</span>
+      <button class="btn-remove" onclick="removeBene(${i})">Supprimer</button>
+    </div>
+    <div class="form-row three">
+      <div class="form-group"><label>Dates</label><input type="text" class="exp-date" value="${escHTML(e.date||'')}" /></div>
+      <div class="form-group"><label>Rôle</label><input type="text" class="exp-title" value="${escHTML(e.title||'')}" /></div>
+      <div class="form-group"><label>Organisation</label><input type="text" class="exp-org" value="${escHTML(e.org||'')}" /></div>
+    </div>
+    <div class="form-row full">
+      <div class="form-group"><label>Description</label><textarea class="exp-desc">${escHTML(e.desc||'')}</textarea></div>
+    </div>
+    <div class="form-row full">
+      <div class="form-group">
+        <label>Tags</label>
+        <input type="text" class="exp-tags" value="${escHTML((e.tags||[]).join(', '))}" />
+        <span class="hint">Séparer les tags par des virgules</span>
+      </div>
+    </div>
+  </div>`;
+}
+function renderBeneList(benes) {
+  document.getElementById('bene-list').innerHTML = benes.map(beneHTML).join('');
+  makeSortable('bene-list');
+}
+function addBene() {
+  const d = collectCVData();
+  d.benevole.push({date:'',title:'',org:'',desc:'',tags:[]});
+  renderBeneList(d.benevole);
+}
+function removeBene(i) {
+  const d = collectCVData();
+  d.benevole.splice(i,1);
+  renderBeneList(d.benevole);
+}
+
+/* ─────────────────────────────────────
+   PROJETS
+───────────────────────────────────── */
+function projetHTML(e, i) {
+  return `<div class="entry-card" draggable="true" id="projet-${i}">
+    <div class="entry-card-head">
+      <span class="drag-handle">⠿</span><span class="entry-num">Projet ${i+1}</span>
+      <button class="btn-remove" onclick="removeProjet(${i})">Supprimer</button>
+    </div>
+    <div class="form-row three">
+      <div class="form-group"><label>Dates</label><input type="text" class="exp-date" value="${escHTML(e.date||'')}" /></div>
+      <div class="form-group"><label>Titre</label><input type="text" class="exp-title" value="${escHTML(e.title||'')}" /></div>
+      <div class="form-group"><label>Rôle / Type</label><input type="text" class="exp-org" value="${escHTML(e.org||'')}" /></div>
+    </div>
+    <div class="form-row full">
+      <div class="form-group"><label>Description</label><textarea class="exp-desc">${escHTML(e.desc||'')}</textarea></div>
+    </div>
+    <div class="form-row full">
+      <div class="form-group">
+        <label>Tags</label>
+        <input type="text" class="exp-tags" value="${escHTML((e.tags||[]).join(', '))}" />
+        <span class="hint">Séparer les tags par des virgules</span>
+      </div>
+    </div>
+  </div>`;
+}
+function renderProjetList(projets) {
+  document.getElementById('projet-list').innerHTML = projets.map(projetHTML).join('');
+  makeSortable('projet-list');
+}
+function addProjet() {
+  const d = collectCVData();
+  d.projets.push({date:'',title:'',org:'',desc:'',tags:[]});
+  renderProjetList(d.projets);
+}
+function removeProjet(i) {
+  const d = collectCVData();
+  d.projets.splice(i,1);
+  renderProjetList(d.projets);
+}
+
+/* ─────────────────────────────────────
+   SKILLS (dynamic categories)
+───────────────────────────────────── */
+function skillCatHTML(cat, i) {
+  return `<div class="entry-card" draggable="true" id="skill-cat-${i}">
+    <div class="entry-card-head">
+      <span class="drag-handle">⠿</span><span class="entry-num">Catégorie ${i+1}</span>
+      <button class="btn-remove" onclick="removeSkillCat(${i})">Supprimer</button>
+    </div>
+    <div class="form-row">
+      <div class="form-group">
+        <label>Nom de la catégorie</label>
+        <input type="text" class="skill-cat-name" value="${escHTML(cat.name||'')}" placeholder="ex: Communication & Contenus" />
+      </div>
+      <div class="form-group">
+        <label>Compétences</label>
+        <textarea class="skill-cat-items" placeholder="Un skill par ligne">${escHTML((cat.items||[]).join('\n'))}</textarea>
+        <span class="hint">Une compétence par ligne</span>
+      </div>
+    </div>
+  </div>`;
+}
+
+function renderSkillList(skills) {
+  document.getElementById('skills-list').innerHTML = skills.map(skillCatHTML).join('');
+  makeSortable('skills-list');
+}
+
+/* ─────────────────────────────────────
+   DRAG & DROP (reorder blocks)
+───────────────────────────────────── */
+function makeSortable(listId) {
+  const list = document.getElementById(listId);
+  if (!list) return;
+  let dragCard = null;
+  list.addEventListener('dragstart', e => {
+    if (['INPUT','TEXTAREA','BUTTON','SELECT'].includes(e.target.tagName)) { e.preventDefault(); return; }
+    dragCard = e.target.closest('.entry-card');
+    if (!dragCard) return;
+    setTimeout(() => dragCard.classList.add('dragging'), 0);
+    e.dataTransfer.effectAllowed = 'move';
+  });
+  list.addEventListener('dragend', () => {
+    if (dragCard) dragCard.classList.remove('dragging');
+    dragCard = null;
+  });
+  list.addEventListener('dragover', e => {
+    e.preventDefault();
+    if (!dragCard) return;
+    const target = e.target.closest('.entry-card');
+    if (!target || target === dragCard) return;
+    const rect = target.getBoundingClientRect();
+    const after = e.clientY > rect.top + rect.height / 2;
+    list.insertBefore(dragCard, after ? target.nextSibling : target);
+  });
+}
+
+function addSkillCat() {
+  const skills = collectSkills();
+  skills.push({name:'',items:[]});
+  renderSkillList(skills);
+}
+
+function removeSkillCat(i) {
+  const skills = collectSkills();
+  skills.splice(i,1);
+  renderSkillList(skills);
+}
+
+function collectSkills() {
+  return [...document.querySelectorAll('#skills-list .entry-card')].map(card => ({
+    name:  card.querySelector('.skill-cat-name').value,
+    items: card.querySelector('.skill-cat-items').value.split('\n').map(s=>s.trim()).filter(Boolean)
+  }));
+}
+
+/* ─────────────────────────────────────
+   COLLECT ALL
+───────────────────────────────────── */
+function collectCVData() {
+  const exps = [...document.querySelectorAll('#exp-list .entry-card')].map(card => ({
+    date:  card.querySelector('.exp-date').value,
+    title: card.querySelector('.exp-title').value,
+    org:   card.querySelector('.exp-org').value,
+    desc:  card.querySelector('.exp-desc').value,
+    tags:  card.querySelector('.exp-tags').value.split(',').map(t=>t.trim()).filter(Boolean)
+  }));
+  const edus = [...document.querySelectorAll('#edu-list .entry-card')].map(card => ({
+    date:  card.querySelector('.edu-date').value,
+    title: card.querySelector('.edu-title').value,
+    org:   card.querySelector('.edu-org').value,
+    desc:  card.querySelector('.edu-desc').value,
+    tags:  card.querySelector('.edu-tags').value.split(',').map(t=>t.trim()).filter(Boolean)
+  }));
+  const certs = [...document.querySelectorAll('#cert-list .entry-card')].map(card => ({
+    date:  card.querySelector('.edu-date').value,
+    title: card.querySelector('.edu-title').value,
+    org:   card.querySelector('.edu-org').value,
+    desc:  card.querySelector('.edu-desc').value,
+    tags:  card.querySelector('.edu-tags').value.split(',').map(t=>t.trim()).filter(Boolean)
+  }));
+  return {
+    name: document.getElementById('cv-name-val').value,
+    role: document.getElementById('cv-role-val').value,
+    experiences: exps,
+    education: edus,
+    certifications: certs,
+    benevole: [...document.querySelectorAll('#bene-list .entry-card')].map(card => ({
+      date:  card.querySelector('.exp-date').value,
+      title: card.querySelector('.exp-title').value,
+      org:   card.querySelector('.exp-org').value,
+      desc:  card.querySelector('.exp-desc').value,
+      tags:  card.querySelector('.exp-tags').value.split(',').map(t=>t.trim()).filter(Boolean)
+    })),
+    projets: [...document.querySelectorAll('#projet-list .entry-card')].map(card => ({
+      date:  card.querySelector('.exp-date').value,
+      title: card.querySelector('.exp-title').value,
+      org:   card.querySelector('.exp-org').value,
+      desc:  card.querySelector('.exp-desc').value,
+      tags:  card.querySelector('.exp-tags').value.split(',').map(t=>t.trim()).filter(Boolean)
+    })),
+    skills: collectSkills()
+  };
+}
+
+function collectAll() {
+  const raw = localStorage.getItem('lj_content');
+  const stored = raw ? JSON.parse(raw) : {};
+  return {
+    lettre: {
+      recipient:   document.getElementById('l-recipient').value,
+      body:        document.getElementById('l-body').innerHTML,
+      quote1:      document.getElementById('l-q1').value,
+      quote2:      document.getElementById('l-q2').value,
+      signName:    document.getElementById('l-sign-name').value,
+      signContact: document.getElementById('l-sign-contact').value
+    },
+    lettre_laurence: { recipient: document.getElementById('lp-laurence-recipient').value, body: document.getElementById('lp-laurence-body').innerHTML.replace(/^(<br>|\s)*$/, '') },
+    lettre_valentin: { recipient: document.getElementById('lp-valentin-recipient').value, body: document.getElementById('lp-valentin-body').innerHTML.replace(/^(<br>|\s)*$/, '') },
+    lettre_jerome:   { recipient: document.getElementById('lp-jerome-recipient').value,   body: document.getElementById('lp-jerome-body').innerHTML.replace(/^(<br>|\s)*$/, '') },
+    loveHeader: document.getElementById('l-love-header').value,
+    loveList:   collectLoveList(),
+    photo: stored.photo || null,
+    cv: collectCVData(),
+    contact: {
+      title:       document.getElementById('ct-title').value,
+      infos:       collectContactInfos(),
+      leftInfos:   collectLeftInfos(),
+      quote:       document.getElementById('ct-quote').value,
+      quoteAuthor: document.getElementById('ct-quote-author').value
+    }
+  };
+}
+
+/* ─────────────────────────────────────
+   CONTACT INFOS (dynamic)
+───────────────────────────────────── */
+function contactInfoHTML(info, i) {
+  return `<div class="entry-card" id="ct-info-${i}">
+    <div class="entry-card-head">
+      <span class="entry-num">Ligne ${i+1}</span>
+      <button class="btn-remove" onclick="removeContactInfo(${i})">Supprimer</button>
+    </div>
+    <div class="form-row">
+      <div class="form-group" style="max-width:200px;">
+        <label>Libellé</label>
+        <input type="text" class="ct-info-label" value="${escHTML(info.label||'')}" placeholder="Email, Tél., LinkedIn…" />
+      </div>
+      <div class="form-group">
+        <label>Valeur</label>
+        <input type="text" class="ct-info-value" value="${escHTML(info.value||'')}" placeholder="valeur ou lien" />
+        <span class="hint">Si l'email contient @, un lien mailto: est créé automatiquement · idem pour tél. et URL</span>
+      </div>
+    </div>
+  </div>`;
+}
+
+function renderContactInfos(infos) {
+  document.getElementById('contact-infos-admin').innerHTML = infos.map(contactInfoHTML).join('');
+}
+
+function leftInfoHTML(info, i) {
+  return `<div class="entry-card" draggable="true">
+    <div class="entry-card-head">
+      <span class="drag-handle">⠇</span>
+      <span class="entry-num">Ligne ${i+1}</span>
+      <button class="btn-remove" onclick="removeLeftInfo(${i})">Supprimer</button>
+    </div>
+    <div class="form-row">
+      <div class="form-group" style="max-width:200px;">
+        <label>Libellé</label>
+        <input type="text" class="ct-left-label" value="${escHTML(info.label||'')}" placeholder="Disponibilité…" />
+      </div>
+      <div class="form-group">
+        <label>Valeur</label>
+        <input type="text" class="ct-left-value" value="${escHTML(info.value||'')}" placeholder="Immédiate" />
+      </div>
+    </div>
+  </div>`;
+}
+function renderLeftInfos(infos) {
+  document.getElementById('contact-left-infos-admin').innerHTML = infos.map(leftInfoHTML).join('');
+  makeSortable('contact-left-infos-admin');
+}
+function addLeftInfo() {
+  const infos = collectLeftInfos();
+  infos.push({label:'', value:''});
+  renderLeftInfos(infos);
+}
+function removeLeftInfo(i) {
+  const infos = collectLeftInfos();
+  infos.splice(i, 1);
+  renderLeftInfos(infos);
+}
+function collectLeftInfos() {
+  return [...document.querySelectorAll('#contact-left-infos-admin .entry-card')].map(card => ({
+    label: card.querySelector('.ct-left-label').value,
+    value: card.querySelector('.ct-left-value').value
+  }));
+}
+
+function addContactInfo() {
+  const infos = collectContactInfos();
+  infos.push({label:'', value:''});
+  renderContactInfos(infos);
+}
+
+function removeContactInfo(i) {
+  const infos = collectContactInfos();
+  infos.splice(i, 1);
+  renderContactInfos(infos);
+}
+
+function collectContactInfos() {
+  return [...document.querySelectorAll('#contact-infos-admin .entry-card')].map(card => ({
+    label: card.querySelector('.ct-info-label').value,
+    value: card.querySelector('.ct-info-value').value
+  }));
+}
+
+/* ─────────────────────────────────────
+   RICHTEXT FORMAT
+───────────────────────────────────── */
+function fmt(cmd) {
+  document.execCommand(cmd, false, null);
+}
+
+/* ─────────────────────────────────────
+   PHOTO
+───────────────────────────────────── */
+function handlePhoto(input) {
+  if (!input.files || !input.files[0]) return;
+  const reader = new FileReader();
+  reader.onload = e => {
+    const src = e.target.result;
+    document.getElementById('photo-img').src = src;
+    document.getElementById('photo-preview').style.display = 'block';
+    const d = collectAll();
+    d.photo = src;
+    localStorage.setItem('lj_content', JSON.stringify(d));
+    showSaveConfirm();
+  };
+  reader.readAsDataURL(input.files[0]);
+}
+
+/* ─────────────────────────────────────
+   SAVE / RESET / TABS
+───────────────────────────────────── */
+function saveAll() {
+  localStorage.setItem('lj_content', JSON.stringify(collectAll()));
+  showSaveConfirm();
+}
+
+function showSaveConfirm() {
+  const el = document.getElementById('save-confirm');
+  el.classList.add('show');
+  setTimeout(() => el.classList.remove('show'), 2500);
+}
+
+function resetContent() {
+  if (!confirm('Réinitialiser tout le contenu aux valeurs par défaut ?')) return;
+  localStorage.removeItem('lj_content');
+  loadForm();
+  showSaveConfirm();
+}
+
+function showTab(name, btn) {
+  document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById('tab-' + name).classList.add('active');
+  if (btn) btn.classList.add('active');
+}
+
+function showPersoTab(name, btn) {
+  document.querySelectorAll('.perso-tab-content').forEach(t => t.classList.remove('active'));
+  document.querySelectorAll('.perso-tab-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById('perso-' + name).classList.add('active');
+  if (btn) btn.classList.add('active');
+}
+
+function loadPersoBody(id, body) {
+  const el = document.getElementById(id);
+  if (!el) return;
+  if (!body) { el.innerHTML = ''; return; }
+  if (body.includes('<p>') || body.includes('<b>') || body.includes('<em>')) {
+    el.innerHTML = body;
+  } else {
+    el.innerHTML = body.split(/\n\n+/).map(p => `<p>${p.replace(/\n/g,'<br>')}</p>`).join('');
+  }
+}
+
+/* ─────────────────────────────────────
+   UTILS
+───────────────────────────────────── */
+function escHTML(str) {
+  return String(str).replace(/&/g,'&amp;').replace(/"/g,'&quot;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+}
+</script>
+</body>
+</html>
