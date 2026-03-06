@@ -1065,7 +1065,7 @@ document.addEventListener('mousemove', e => {
 document.addEventListener('mouseover', e => {
   const tag = e.target.tagName;
   const isText = TEXT_TAGS.includes(tag) && e.target.textContent.trim().length > 0;
-  const isBigZone = !!e.target.closest('.ct-title, .ct-quote, .lettre-q');
+  const isBigZone = !!e.target.closest('.ct-title, .ct-quote, .lettre-q, .love-item');
   if (isText || isBigZone) {
     cursor.classList.add('big');
   } else {
