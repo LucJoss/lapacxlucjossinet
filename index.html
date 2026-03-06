@@ -1064,8 +1064,8 @@ document.addEventListener('mousemove', e => {
 
 document.addEventListener('mouseover', e => {
   const tag = e.target.tagName;
-  const isText = TEXT_TAGS.includes(tag) && e.target.textContent.trim().length > 0;
-  const isBigZone = !!e.target.closest('.ct-title, .ct-quote, .lettre-q, .lettre-sign, .li-title, .li-sub, .cv-title, .cv-date, .cv-org, .cv-desc, .cv-tags, .sk-cat-title, .sk-pills');
+  const isText = TEXT_TAGS.includes(tag) && e.target.childElementCount === 0 && e.target.textContent.trim().length > 0;
+  const isBigZone = !!e.target.closest('.ct-title, .ct-quote, .lettre-q, .lettre-sign, .li-title, .li-sub, .cv-title, .cv-date, .cv-org, .cv-desc, .cv-tags, .sk-cat-title, .sk-pills, .cv-name, .cv-role');
   if (isText || isBigZone) {
     cursor.classList.add('big');
   } else {
