@@ -573,13 +573,14 @@ body.user-jerome   .welcome-hint{color:rgba(255,255,255,.35);}
 
   /* Lettre */
   .col-left{
-    height:auto;overflow-y:visible;
+    flex-shrink:0;
+    overflow-y:visible;
     border-right:none;
     border-bottom:1.5px solid rgba(0,0,0,.25);
     padding:28px 20px;
     order:0;
   }
-  .col-right{height:auto;overflow-y:visible;padding:28px 20px;order:1;}
+  .col-right{flex-shrink:0;overflow-y:visible;padding:28px 20px;order:1;}
 
   /* Vidéos — tap-to-play inline */
   .love-preview{
@@ -603,40 +604,40 @@ body.user-jerome   .welcome-hint{color:rgba(255,255,255,.35);}
 
   /* CV */
   .cv-col-left{
-    height:auto;overflow-y:visible;
+    flex-shrink:0;
+    overflow-y:visible;
     border-right:none;
     border-bottom:1.5px solid rgba(255,255,255,.18);
     padding:28px 20px;
     order:0;
   }
-  .cv-col-right{height:auto;overflow-y:visible;padding:28px 20px;order:1;}
+  .cv-col-right{flex-shrink:0;overflow-y:visible;padding:28px 20px;order:1;}
 
-  /* Contact — titre, infos, citation, puis photo en bas */
+  /* Contact — titre, infos, citation, puis infos gauche + photo en bas */
   .contact-right{
     order:0;
+    flex-shrink:0;
     overflow:visible;
     display:flex;
     flex-direction:column;
-    height:auto;
     padding:28px 20px 20px;
-    min-height:0;
   }
   .ct-sp{display:none;}
   .ct-title{font-size:clamp(22px,7vw,36px);margin-bottom:20px;}
   .ct-infos{margin-bottom:20px;}
-  .ct-quote{font-size:clamp(13px,3.5vw,16px);padding-top:16px;}
+  .ct-quote{font-size:clamp(13px,3.5vw,16px);padding-top:16px;margin-bottom:0;}
 
   .contact-left{
     order:1;
+    flex-shrink:0;
     flex-direction:column;
     align-items:center;
-    padding:20px 20px 40px;
+    padding:24px 20px 48px;
     gap:8px;
-    min-height:0;
   }
   .contact-photo{width:45%;max-width:180px;}
   .contact-photo-caption{text-align:center;margin-top:0;}
-  .ct-left-infos{width:100%;margin-top:8px;}
+  .ct-left-infos{width:100%;margin-top:12px;}
 }
 </style>
 </head>
