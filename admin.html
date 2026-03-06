@@ -76,6 +76,13 @@ html,body{height:100%;font-family:'Helvetica Neue','Arial',sans-serif;-webkit-fo
   transition:color .2s,border-color .2s;
 }
 #reset-btn:hover{color:#ff0000;border-color:#ff0000;}
+#export-btn,#import-btn{
+  background:none;color:rgba(0,0,0,.4);border:1.5px solid rgba(0,0,0,.18);
+  font-size:10px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;
+  font-family:inherit;padding:10px 16px;cursor:pointer;
+  transition:color .2s,border-color .2s;
+}
+#export-btn:hover,#import-btn:hover{color:#000;border-color:#000;}
 #save-confirm{
   font-size:9px;font-weight:700;letter-spacing:.15em;text-transform:uppercase;
   color:#008800;opacity:0;transition:opacity .3s;
@@ -224,6 +231,8 @@ textarea.xtall{min-height:360px;}
     </div>
     <div id="admin-actions">
       <span id="save-confirm">Sauvegardé ✓</span>
+      <button id="export-btn" onclick="exportJSON()">Exporter</button>
+      <label id="import-btn">Importer<input type="file" accept=".json" style="display:none" onchange="importJSON(this)"></label>
       <button id="reset-btn" onclick="resetContent()">Réinitialiser</button>
       <button id="save-btn" onclick="saveAll()">Sauvegarder</button>
     </div>
@@ -1165,6 +1174,29 @@ function showSaveConfirm() {
   const el = document.getElementById('save-confirm');
   el.classList.add('show');
   setTimeout(() => el.classList.remove('show'), 2500);
+}
+
+function exportJSON() {
+  const data = localStorage.getItem('lj_content') || '{}';
+  const blob = new Blob([data], {type:'application/json'});
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = 'lj_content.json';
+  a.click();
+}
+
+function importJSON(input) {
+  const file = input.files[0];
+  if (!file) return;
+  const reader = new FileReader();
+  reader.onload = e => {
+    try {
+      JSON.parse(e.target.result);
+      localStorage.setItem('lj_content', e.target.result);
+      location.reload();
+    } catch { alert('Fichier JSON invalide'); }
+  };
+  reader.readAsText(file);
 }
 
 function resetContent() {
