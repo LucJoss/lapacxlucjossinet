@@ -553,12 +553,14 @@ body.user-jerome   .welcome-hint{color:rgba(255,255,255,.35);}
   #pw-btn{width:100%;}
   #pw-sub{font-size:9px;margin-bottom:36px;}
 
-  /* Home */
+  /* Home — nom responsive */
   .home-inner{padding:0 20px 40px;}
   .home-cta-line{display:none;}
+  .home-name-line{font-size:clamp(48px,13vw,152px);}
 
-  /* Welcome */
+  /* Welcome — évite la coupure du nom */
   .welcome-inner{padding:0 20px 40px;}
+  .welcome-name-text{font-size:clamp(40px,13vw,100px);}
   body.user-jerome #page-welcome::before{right:20px;}
 
   /* Split → colonne unique scrollable */
@@ -578,7 +580,23 @@ body.user-jerome   .welcome-hint{color:rgba(255,255,255,.35);}
     order:0;
   }
   .col-right{height:auto;overflow-y:visible;padding:28px 20px;order:1;}
-  .love-preview{display:none;}
+
+  /* Vidéos — tap-to-play inline */
+  .love-preview{
+    display:block;
+    margin-top:20px;
+    position:relative;
+    opacity:0;
+    transition:opacity .3s;
+  }
+  .love-preview.on{opacity:1;}
+  .love-item{position:relative;}
+  .love-item::after{
+    content:'▷';
+    position:absolute;right:0;top:50%;transform:translateY(-50%);
+    font-size:11px;color:rgba(0,0,0,.3);
+    pointer-events:none;
+  }
 
   /* Citations lettre */
   .lettre-q{margin:20px 0;font-size:14px;}
@@ -593,35 +611,32 @@ body.user-jerome   .welcome-hint{color:rgba(255,255,255,.35);}
   }
   .cv-col-right{height:auto;overflow-y:visible;padding:28px 20px;order:1;}
 
-  /* Contact — titre en premier, puis photo horizontale, puis infos, puis citation */
-  #page-contact .split{align-items:stretch;}
+  /* Contact — titre, infos, citation, puis photo en bas */
   .contact-right{
-    order:-1;
+    order:0;
     overflow:visible;
-    display:block;
-    padding:28px 20px 24px;
+    display:flex;
+    flex-direction:column;
+    height:auto;
+    padding:28px 20px 20px;
     min-height:0;
   }
   .ct-sp{display:none;}
-  .ct-title{font-size:clamp(22px,7vw,36px);margin-bottom:24px;}
-  .ct-infos{margin-bottom:24px;}
-  .ct-quote{margin-top:0;font-size:clamp(13px,3.5vw,16px);}
+  .ct-title{font-size:clamp(22px,7vw,36px);margin-bottom:20px;}
+  .ct-infos{margin-bottom:20px;}
+  .ct-quote{font-size:clamp(13px,3.5vw,16px);padding-top:16px;}
 
   .contact-left{
-    order:0;
-    padding:0 20px 20px;
-    flex-direction:row;
+    order:1;
+    flex-direction:column;
     align-items:center;
-    gap:16px;
+    padding:20px 20px 40px;
+    gap:8px;
     min-height:0;
   }
-  .contact-photo{width:90px;max-width:90px;flex-shrink:0;}
-  .contact-photo-caption{
-    text-align:left;
-    margin-top:0;
-    font-size:10px;
-  }
-  .ct-left-infos{margin-top:0;}
+  .contact-photo{width:45%;max-width:180px;}
+  .contact-photo-caption{text-align:center;margin-top:0;}
+  .ct-left-infos{width:100%;margin-top:8px;}
 }
 </style>
 </head>
