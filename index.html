@@ -1055,7 +1055,7 @@ function bindLoveHovers(customData) {
    CURSOR
 ───────────────────────────────────── */
 const cursor = document.getElementById('cursor');
-const TEXT_TAGS = ['P','H1','H2','H3','H4','SPAN','A','DIV','LI','BUTTON','INPUT','SMALL','EM'];
+const TEXT_TAGS = ['P','H1','H2','H3','H4','SPAN','A','LI','BUTTON','INPUT','SMALL','EM'];
 
 document.addEventListener('mousemove', e => {
   cursor.style.left = e.clientX + 'px';
@@ -1064,9 +1064,9 @@ document.addEventListener('mousemove', e => {
 
 document.addEventListener('mouseover', e => {
   const tag = e.target.tagName;
-  const isText = e.target.childElementCount === 0 && e.target.textContent.trim().length > 0;
+  const isText = TEXT_TAGS.includes(tag) && e.target.textContent.trim().length > 0;
   const isBigZone = !!e.target.closest('.ct-title, .ct-quote');
-  if ((isText && TEXT_TAGS.includes(tag)) || isBigZone) {
+  if (isText || isBigZone) {
     cursor.classList.add('big');
   } else {
     cursor.classList.remove('big');
