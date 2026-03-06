@@ -531,6 +531,69 @@ body.user-laurence .welcome-hint{color:rgba(0,0,0,.4);}
 body.user-valentin .welcome-hint{color:rgba(0,0,0,.4);}
 body.user-jerome   .welcome-hint{color:rgba(255,255,255,.35);}
 #page-welcome.active .welcome-hint{opacity:1;transform:translateY(0);}
+
+/* ════════════════════════════════════════
+   RESPONSIVE — MOBILE
+════════════════════════════════════════ */
+
+/* Touch : masquer le curseur custom */
+@media (pointer:coarse){
+  *{cursor:auto!important;}
+  #cursor{display:none;}
+}
+
+@media (max-width:768px){
+  /* Nav */
+  #nav{padding:0 20px;height:48px;}
+  #nav .nav-link{margin-left:16px;font-size:10px;letter-spacing:.08em;}
+
+  /* Password screen */
+  #pw-box{width:calc(100% - 40px);}
+  #pw-field-wrap{width:100%;}
+  #pw-btn{width:100%;}
+  #pw-sub{font-size:9px;margin-bottom:36px;}
+
+  /* Home */
+  .home-inner{padding:0 20px 40px;}
+  .home-cta-line{display:none;}
+
+  /* Welcome */
+  .welcome-inner{padding:0 20px 40px;}
+  body.user-jerome #page-welcome::before{right:20px;}
+
+  /* Split → colonne unique scrollable */
+  .split{
+    display:block;
+    overflow-y:auto;
+    height:100%;
+  }
+
+  /* Lettre */
+  .col-left{
+    height:auto;overflow-y:visible;
+    border-right:none;
+    border-bottom:1.5px solid rgba(0,0,0,.25);
+    padding:28px 20px;
+  }
+  .col-right{height:auto;overflow-y:visible;padding:28px 20px;}
+  .love-preview{display:none;}
+
+  /* CV */
+  .cv-col-left{
+    height:auto;overflow-y:visible;
+    border-right:none;
+    border-bottom:1.5px solid rgba(255,255,255,.18);
+    padding:28px 20px;
+  }
+  .cv-col-right{height:auto;overflow-y:visible;padding:28px 20px;}
+
+  /* Contact */
+  .contact-left{padding:28px 20px;min-height:0;}
+  .contact-photo{width:55%;max-width:200px;}
+  .contact-right{overflow:visible;padding:28px 20px 48px;min-height:0;}
+  .ct-sp{display:none;}
+  .ct-title{font-size:clamp(22px,7vw,38px);}
+}
 </style>
 </head>
 <body class="p-home">
