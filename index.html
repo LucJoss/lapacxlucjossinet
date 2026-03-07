@@ -1158,9 +1158,20 @@ function bindLoveHovers(customData) {
     const media = d.media || '';
     // Fond gradient immédiat
     preview.style.background = d.bg || FALLBACK_BG;
-    // Overlay media si disponible en cache (desktop)
+    // Overlay media si disponible en cache
     if (media && mediaCache[idx]) {
-      mediaCache[idx].style.visibility = 'visible';
+      const el = mediaCache[idx];
+      const t = toSeconds(d.mediaStart);
+      if (t > 0) {
+        if (getVimeoId(media)) {
+          // Vimeo : seek sans rechargement via postMessage
+          try { el.contentWindow.postMessage(JSON.stringify({method:'seekTo', value: t}), '*'); } catch(e) {}
+        } else {
+          // YouTube : reset src → redémarre depuis &start=t
+          const s = el.src; el.src = ''; el.src = s;
+        }
+      }
+      el.style.visibility = 'visible';
     } else if (media && !getVimeoId(media) && !getYtId(media)) {
       const img = document.createElement('img');
       img.src = media;
