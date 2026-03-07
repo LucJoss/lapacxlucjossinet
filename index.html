@@ -589,19 +589,17 @@ body.user-jerome   .welcome-hint{color:rgba(255,255,255,.35);}
   }
   .col-right{flex-shrink:0;overflow-y:visible;overflow-x:hidden;padding:28px 20px;order:1;}
 
-  /* Vidéos — carte inline sous l'item, pleine largeur */
+  /* Vidéos — carte inline sous l'item */
   .love-preview{
     height:0;overflow:hidden;pointer-events:none;
-    margin:0 -20px;
-    width:calc(100% + 40px);
-    aspect-ratio:unset;
+    margin:0;
     position:relative;
     opacity:0;
     transition:opacity .3s;
   }
   .love-preview.on{
-    height:56.25vw;opacity:1;pointer-events:auto;
-    margin:4px -20px 8px;
+    height:auto;opacity:1;pointer-events:auto;
+    margin:8px 0 12px;
   }
   .lp-inner{
     background:linear-gradient(to top,rgba(0,0,0,.9) 0%,rgba(0,0,0,.35) 100%);
@@ -667,7 +665,11 @@ body.user-jerome   .welcome-hint{color:rgba(255,255,255,.35);}
   }
   .contact-photo{width:45%;max-width:180px;}
   .contact-photo-caption{text-align:center;margin-top:0;}
-  .ct-left-infos{width:100%;margin-top:12px;}
+  /* Photo/caption déplacés dans contact-right par JS */
+  .contact-right .contact-photo{align-self:center;margin-top:16px;margin-bottom:8px;}
+  .contact-right .contact-photo-caption{align-self:center;margin-bottom:20px;}
+  /* ct-left-infos déplacé en fin de split par JS */
+  .ct-left-infos{flex-shrink:0;width:100%;padding:0 20px 48px;order:3;}
 }
 </style>
 </head>
@@ -1429,7 +1431,10 @@ function applyContent(d) {
       const cvName = document.querySelector('.cv-name');
       const cvRole = document.querySelector('.cv-role');
       if (cvName) cvName.innerHTML = C.name;
-      if (cvRole) cvRole.textContent = C.role;
+      if (cvRole) {
+        cvRole.textContent = C.role;
+        if (window.innerWidth <= 768) cvRole.innerHTML = cvRole.innerHTML.replace(' · ', '<br>');
+      }
       // Experiences
       const expContainer = document.getElementById('cv-experiences');
       if (expContainer && C.experiences) {
@@ -1623,11 +1628,26 @@ window.addEventListener('DOMContentLoaded', () => {
   buildGrid();
   bindLoveHovers();
   loadAdminContent();
-  // Mobile : déplacer la citation en fin de page contact
   if (window.innerWidth <= 768) {
-    const split = document.querySelector('#page-contact .split');
-    const quote = document.querySelector('#page-contact .ct-quote');
+    // Contact — réordonner : titre → photo + caption → infos → citation → ct-left-infos
+    const contactRight = document.querySelector('#page-contact .contact-right');
+    const contactLeft  = document.querySelector('#page-contact .contact-left');
+    const split        = document.querySelector('#page-contact .split');
+    const photo        = document.querySelector('#page-contact .contact-photo');
+    const caption      = document.querySelector('#page-contact .contact-photo-caption');
+    const infos        = document.querySelector('#page-contact #ct-infos');
+    const quote        = document.querySelector('#page-contact .ct-quote');
+    const leftInfos    = document.querySelector('#page-contact .ct-left-infos');
+    if (contactRight && photo && caption && infos) {
+      contactRight.insertBefore(caption, infos);
+      contactRight.insertBefore(photo, caption);
+    }
     if (split && quote) split.appendChild(quote);
+    if (split && leftInfos) split.appendChild(leftInfos);
+    if (contactLeft) contactLeft.style.display = 'none';
+    // CV — saut de ligne après le séparateur dans le rôle
+    const cvRole = document.querySelector('.cv-role');
+    if (cvRole) cvRole.innerHTML = cvRole.innerHTML.replace(' · ', '<br>');
   }
 });
 </script>
