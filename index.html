@@ -1359,7 +1359,8 @@ function applyContent(d) {
       } else {
         if (currentUser === 'laurence' && L.body) L.body = L.body
           .replace(/Laurence Delbasty et Valentin(?:\s+Gozet)?/g, 'vous-même et Valentin')
-          .replace(/Laurence avait eu la gentillesse/g, 'Madame Delbasty avait eu la gentillesse')
+          .replace(/Laurence avait eu la gentillesse/g, 'vous aviez eu la gentillesse')
+          .replace(/Madame Delbasty avait eu la gentillesse/g, 'vous aviez eu la gentillesse')
           .replace(/Madame Delbasty,/g, 'vous,')
           .replace(/je vous ai adressé une première lettre/gi, "j'ai adressé une lettre à Monsieur Denis");
         if (currentUser === 'valentin' && L.body) L.body = L.body
@@ -1369,7 +1370,7 @@ function applyContent(d) {
       }
       // Correction post-traitement (s'applique aussi aux overrides localStorage)
       if (currentUser === 'laurence' && L.body) {
-        L.body = L.body.replace(/vous (?:avez|aviez) eu la gentillesse/g, 'Madame Delbasty avait eu la gentillesse');
+        L.body = L.body.replace(/Madame Delbasty avait eu la gentillesse/g, 'vous aviez eu la gentillesse');
       }
       const scroll = document.getElementById('lettre-scroll');
       if (scroll) {
