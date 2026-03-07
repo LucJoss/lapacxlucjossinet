@@ -1059,25 +1059,22 @@ function go(name) {
   current = name;
   disableHomeGestures();
   disableWelcomeGestures();
-  // Warmup Vimeo dès la page welcome (1.5s d'avance sur lettre)
-  if (name === 'welcome' && window._vimeoPreloadIds && !window._vmWarmupDone) {
-    window._vmWarmupDone = true;
-    const w = document.createElement('div');
-    w.style.cssText = 'position:fixed;top:0;left:0;width:1px;height:1px;overflow:hidden;opacity:0.01;pointer-events:none;z-index:-1;';
-    document.body.appendChild(w);
-    window._vimeoPreloadIds.forEach(vmId => {
-      const f = document.createElement('iframe');
-      f.src = `https://player.vimeo.com/video/${vmId}?autoplay=1&muted=1&loop=1&background=1&playsinline=1`;
-      f.allow = 'autoplay';
-      f.style.cssText = 'width:640px;height:360px;border:none;';
-      w.appendChild(f);
-    });
-  }
-  // Créer les vraies iframes dans #lp-media après la transition complète (0.55s → 600ms)
-  if (name === 'lettre' && window._lettreMediaInit) {
+  // Dès la page welcome : rendre #page-lettre opacity:0.01 et créer les iframes
+  // Le browser charge les iframes (parent visible), vidéos bufferisent ~1.5s d'avance
+  if (name === 'welcome' && window._lettreMediaInit) {
+    document.getElementById('page-lettre').style.opacity = '0.01';
     const init = window._lettreMediaInit;
     window._lettreMediaInit = null;
-    setTimeout(init, 600);
+    requestAnimationFrame(init);
+  }
+  // À l'arrivée sur lettre : retirer l'opacity inline, CSS prend le relais
+  if (name === 'lettre') {
+    document.getElementById('page-lettre').style.opacity = '';
+    if (window._lettreMediaInit) { // fallback si non créé au welcome
+      const init = window._lettreMediaInit;
+      window._lettreMediaInit = null;
+      setTimeout(init, 600);
+    }
   }
   if (name === 'home') {
     setTimeout(() => enableHomeGestures(), 800);
