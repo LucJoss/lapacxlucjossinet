@@ -1376,6 +1376,9 @@ function applyContent(d) {
       if (currentUser === 'valentin' && L.body) {
         L.body = L.body.replace(/Madame Delbasty avait eu la gentillesse/g, 'Laurence avait eu la gentillesse');
       }
+      if (currentUser === 'jerome' && L.body) {
+        L.body = L.body.replace(/Madame Delbasty avait eu la gentillesse/g, 'Laurence Delbasty avait eu la gentillesse');
+      }
       const scroll = document.getElementById('lettre-scroll');
       if (scroll) {
         let bodyHTML = '';
