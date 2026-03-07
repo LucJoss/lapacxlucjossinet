@@ -1125,11 +1125,11 @@ function bindLoveHovers(customData) {
     hideAll();
     const media = d.media || '';
     if (media && mediaCache[idx]) {
-      preview.style.background = '';
+      preview.style.background = d.bg || FALLBACK_BG;
       mediaCache[idx].style.visibility = 'visible';
       preview.classList.add('on');
     } else if (media) {
-      preview.style.background = '';
+      preview.style.background = d.bg || FALLBACK_BG;
       const img = document.createElement('img');
       img.src = media;
       img.style.cssText = 'position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block;';
