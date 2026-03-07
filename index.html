@@ -373,6 +373,7 @@ a.ct-line:hover .ct-arrow{color:rgba(255,255,255,.6);}
   background:#000;
   display:flex;align-items:center;justify-content:center;
   transition:opacity .45s ease;
+  overflow:hidden;
 }
 #password-screen.hidden{opacity:0;pointer-events:none;}
 #pw-box{
@@ -580,12 +581,13 @@ body.user-jerome   .welcome-hint{color:rgba(255,255,255,.35);}
   .col-left{
     flex-shrink:0;
     overflow-y:visible;
+    overflow-x:hidden;
     border-right:none;
     border-bottom:1.5px solid rgba(0,0,0,.25);
     padding:28px 20px;
     order:0;
   }
-  .col-right{flex-shrink:0;overflow-y:visible;padding:28px 20px;order:1;}
+  .col-right{flex-shrink:0;overflow-y:visible;overflow-x:hidden;padding:28px 20px;order:1;}
 
   /* Vidéos — carte inline sous l'item */
   .love-preview{
