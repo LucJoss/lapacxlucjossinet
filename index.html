@@ -1083,6 +1083,20 @@ function go(name) {
     const init = window._lettreMediaInit;
     window._lettreMediaInit = null;
     requestAnimationFrame(init);
+    // Warmup : iframes body-level (hors chaîne opacity) → pre-cache player JS Vimeo
+    if (window._vimeoPreloadIds && !window._vmWarmupDone) {
+      window._vmWarmupDone = true;
+      const w = document.createElement('div');
+      w.style.cssText = 'position:fixed;top:0;left:0;opacity:0.01;pointer-events:none;z-index:-1;';
+      document.body.appendChild(w);
+      window._vimeoPreloadIds.forEach(vmId => {
+        const f = document.createElement('iframe');
+        f.src = `https://player.vimeo.com/video/${vmId}?autoplay=1&muted=1&loop=1&background=1&playsinline=1`;
+        f.allow = 'autoplay';
+        f.style.cssText = 'width:2px;height:2px;border:none;display:block;';
+        w.appendChild(f);
+      });
+    }
   }
   // À l'arrivée sur lettre : retirer l'opacity inline, CSS prend le relais
   if (name === 'lettre') {
