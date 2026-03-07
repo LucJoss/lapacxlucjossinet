@@ -1119,7 +1119,7 @@ function bindLoveHovers(customData) {
     const ytId = getYtId(media);
     const vmId = getVimeoId(media);
     const t = toSeconds(d.mediaStart);
-    const HIDDEN = 'position:absolute;inset:0;width:100%;height:100%;border:none;pointer-events:none;opacity:0;';
+    const HIDDEN = 'position:absolute;inset:0;width:100%;height:100%;border:none;pointer-events:none;opacity:0.001;';
     if (isVideoFile(media)) {
       const v = document.createElement('video');
       v.src = media;
@@ -1147,7 +1147,7 @@ function bindLoveHovers(customData) {
 
   function hideAll() {
     Object.values(mediaCache).forEach(el => { el.style.opacity = '0'; });
-    [...mediaEl.querySelectorAll('img,.mob-iframe')].forEach(el => el.remove());
+    [...mediaEl.querySelectorAll('img')].forEach(el => el.remove());
   }
 
   function showPreview(d, idx) {
@@ -1161,41 +1161,14 @@ function bindLoveHovers(customData) {
     const ytId = getYtId(media);
     const vmId = getVimeoId(media);
     const t = toSeconds(d.mediaStart);
-    const isMobile = window.innerWidth <= 768;
-
-    if (isMobile && (ytId || vmId)) {
-      // Mobile : iframe charge en arrière-plan, thumbnail reste visible ~4s puis disparaît
-      const f = document.createElement('iframe');
-      f.className = 'mob-iframe';
-      if (vmId) {
-        f.src = `https://player.vimeo.com/video/${vmId}?autoplay=1&muted=1&loop=1&background=1#t=${t}s`;
-        f.allow = 'autoplay';
-      } else {
-        f.src = `https://www.youtube.com/embed/${ytId}?autoplay=1&mute=1&loop=1&playlist=${ytId}&start=${t}`;
-        f.allow = 'autoplay; encrypted-media';
-      }
-      f.style.cssText = 'position:absolute;inset:0;width:100%;height:100%;border:none;pointer-events:none;';
-      mediaEl.appendChild(f);
-      if (ytId) {
-        // Thumbnail par-dessus l'iframe (z-index DOM order), disparaît après 4s
-        const thumb = document.createElement('img');
-        thumb.src = `https://img.youtube.com/vi/${ytId}/hqdefault.jpg`;
-        thumb.style.cssText = 'position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block;transition:opacity 1s;';
-        thumb.className = 'mob-iframe';
-        mediaEl.appendChild(thumb);
-        setTimeout(() => {
-          thumb.style.opacity = '0';
-          setTimeout(() => { if (thumb.parentNode) thumb.remove(); }, 1000);
-        }, 4000);
-      }
-    } else if (mediaCache[idx]) {
+    if (mediaCache[idx]) {
       const el = mediaCache[idx];
       if (el.tagName === 'VIDEO') {
         el.currentTime = t;
       } else if (t > 0) {
         if (vmId) {
           try { el.contentWindow.postMessage(JSON.stringify({method:'seekTo', value: t}), '*'); } catch(e) {}
-        } else if (!isMobile) {
+        } else if (window.innerWidth > 768) {
           const s = el.src; el.src = ''; el.src = s;
         }
       }
