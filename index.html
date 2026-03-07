@@ -543,6 +543,10 @@ body.user-jerome   .welcome-hint{color:rgba(255,255,255,.35);}
 }
 
 @media (max-width:768px){
+  /* Empêcher le scroll horizontal */
+  html,body{overflow-x:hidden;}
+  .page{overflow-x:hidden;}
+
   /* Nav */
   #nav{padding:0 20px;height:48px;}
   #nav .nav-link{margin-left:16px;font-size:10px;letter-spacing:.08em;}
@@ -568,6 +572,7 @@ body.user-jerome   .welcome-hint{color:rgba(255,255,255,.35);}
     display:flex;
     flex-direction:column;
     overflow-y:auto;
+    overflow-x:hidden;
     height:100%;
   }
 
