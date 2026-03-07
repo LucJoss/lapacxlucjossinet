@@ -1162,7 +1162,10 @@ function bindLoveHovers(customData) {
     if (media && mediaCache[idx]) {
       const el = mediaCache[idx];
       const t = toSeconds(d.mediaStart);
-      if (t > 0) {
+      if (el.tagName === 'VIDEO') {
+        // Fichier vidéo : seek instantané au bon timestamp
+        el.currentTime = t;
+      } else if (t > 0) {
         if (getVimeoId(media)) {
           // Vimeo : seek via postMessage (sans rechargement)
           try { el.contentWindow.postMessage(JSON.stringify({method:'seekTo', value: t}), '*'); } catch(e) {}
