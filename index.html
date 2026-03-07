@@ -589,17 +589,19 @@ body.user-jerome   .welcome-hint{color:rgba(255,255,255,.35);}
   }
   .col-right{flex-shrink:0;overflow-y:visible;overflow-x:hidden;padding:28px 20px;order:1;}
 
-  /* Vidéos — carte inline sous l'item */
+  /* Vidéos — carte inline sous l'item, pleine largeur */
   .love-preview{
     height:0;overflow:hidden;pointer-events:none;
-    margin:0;
+    margin:0 -20px;
+    width:calc(100% + 40px);
+    aspect-ratio:unset;
     position:relative;
     opacity:0;
     transition:opacity .3s;
   }
   .love-preview.on{
     height:56.25vw;opacity:1;pointer-events:auto;
-    margin:4px 0 8px;
+    margin:4px -20px 8px;
   }
   .lp-inner{
     background:linear-gradient(to top,rgba(0,0,0,.9) 0%,rgba(0,0,0,.35) 100%);
