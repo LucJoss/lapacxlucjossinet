@@ -1094,7 +1094,7 @@ function isVideoFile(url) {
 function toSeconds(tc) {
   if (!tc) return 0;
   const p = String(tc).split(':');
-  return p.length === 2 ? parseInt(p[0])*60 + parseInt(p[1]) : parseInt(tc)||0;
+  return p.length === 2 ? parseFloat(p[0])*60 + parseFloat(p[1]) : parseFloat(tc)||0;
 }
 
 function bindLoveHovers(customData) {
