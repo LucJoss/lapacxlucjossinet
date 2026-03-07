@@ -1059,6 +1059,12 @@ function go(name) {
   current = name;
   disableHomeGestures();
   disableWelcomeGestures();
+  // Créer les iframes vidéo dès que la page lettre est visible
+  if (name === 'lettre' && window._lettreMediaInit) {
+    const init = window._lettreMediaInit;
+    window._lettreMediaInit = null;
+    requestAnimationFrame(init);
+  }
   if (name === 'home') {
     setTimeout(() => enableHomeGestures(), 800);
   } else if (name === 'welcome') {
@@ -1107,43 +1113,59 @@ function bindLoveHovers(customData) {
   const FALLBACK_BG = 'linear-gradient(160deg,#0a0a0a,#1a1a1a)';
   let lockedD = null;
 
-  // Pré-créer toutes les iframes/vidéos au chargement (cachées) pour chargement instantané
   const mediaCache = {};
   const dataList = [];
+  const HIDDEN = 'position:absolute;inset:0;width:100%;height:100%;border:none;pointer-events:none;opacity:0.001;';
+
+  // Populer dataList immédiatement (pas de DOM)
   items.forEach(item => {
     const idx = parseInt(item.dataset.idx);
     const d = customData ? customData[idx] : LOVE_DATA[idx];
-    if (!d) return;
-    dataList[idx] = d;
-    const media = d.media || '';
-    const ytId = getYtId(media);
-    const vmId = getVimeoId(media);
-    const t = toSeconds(d.mediaStart);
-    const HIDDEN = 'position:absolute;inset:0;width:100%;height:100%;border:none;pointer-events:none;opacity:0.001;';
-    if (isVideoFile(media)) {
-      const v = document.createElement('video');
-      v.src = media;
-      v.autoplay = true; v.muted = true; v.loop = true; v.playsInline = true;
-      if (t) v.currentTime = t;
-      v.style.cssText = HIDDEN + 'object-fit:cover;';
-      mediaEl.appendChild(v);
-      mediaCache[idx] = v;
-    } else if (vmId) {
-      const f = document.createElement('iframe');
-      f.src = `https://player.vimeo.com/video/${vmId}?autoplay=1&muted=1&loop=1&background=1#t=${t}s`;
-      f.allow = 'autoplay';
-      f.style.cssText = HIDDEN;
-      mediaEl.appendChild(f);
-      mediaCache[idx] = f;
-    } else if (ytId) {
-      const f = document.createElement('iframe');
-      f.src = `https://www.youtube.com/embed/${ytId}?autoplay=1&mute=1&loop=1&playlist=${ytId}&start=${t}`;
-      f.allow = 'autoplay; encrypted-media';
-      f.style.cssText = HIDDEN;
-      mediaEl.appendChild(f);
-      mediaCache[idx] = f;
-    }
+    if (d) dataList[idx] = d;
   });
+
+  // Créer les iframes quand la page est visible (opacity:1) — sinon le navigateur mobile ne les charge pas
+  const initMediaCache = () => {
+    Object.keys(dataList).forEach(key => {
+      const idx = parseInt(key);
+      if (mediaCache[idx]) return; // déjà créé
+      const d = dataList[idx];
+      const media = d.media || '';
+      const ytId = getYtId(media);
+      const vmId = getVimeoId(media);
+      const t = toSeconds(d.mediaStart);
+      if (isVideoFile(media)) {
+        const v = document.createElement('video');
+        v.src = media;
+        v.autoplay = true; v.muted = true; v.loop = true; v.playsInline = true;
+        if (t) v.currentTime = t;
+        v.style.cssText = HIDDEN + 'object-fit:cover;';
+        mediaEl.appendChild(v);
+        mediaCache[idx] = v;
+      } else if (vmId) {
+        const f = document.createElement('iframe');
+        f.src = `https://player.vimeo.com/video/${vmId}?autoplay=1&muted=1&loop=1&background=1&playsinline=1`;
+        f.allow = 'autoplay';
+        f.style.cssText = HIDDEN;
+        mediaEl.appendChild(f);
+        mediaCache[idx] = f;
+      } else if (ytId) {
+        const f = document.createElement('iframe');
+        f.src = `https://www.youtube.com/embed/${ytId}?autoplay=1&mute=1&loop=1&playlist=${ytId}&start=${t}&playsinline=1`;
+        f.allow = 'autoplay; encrypted-media';
+        f.style.cssText = HIDDEN;
+        mediaEl.appendChild(f);
+        mediaCache[idx] = f;
+      }
+    });
+  };
+
+  // Si la page est déjà active, créer tout de suite. Sinon, différer.
+  if (document.getElementById('page-lettre').classList.contains('active')) {
+    initMediaCache();
+  } else {
+    window._lettreMediaInit = initMediaCache;
+  }
 
   function hideAll() {
     Object.values(mediaCache).forEach(el => { el.style.opacity = '0'; });
