@@ -625,7 +625,7 @@ body.user-jerome   .welcome-hint{color:rgba(255,255,255,.35);}
   .ct-sp{display:none;}
   .ct-title{font-size:clamp(22px,7vw,36px);margin-bottom:20px;}
   .ct-infos{margin-bottom:20px;}
-  .ct-quote{font-size:clamp(13px,3.5vw,16px);padding-top:16px;margin-bottom:0;}
+  .ct-quote{flex-shrink:0;font-size:clamp(13px,3.5vw,16px);padding:16px 20px 48px;}
 
   .contact-left{
     order:1;
@@ -1581,6 +1581,12 @@ window.addEventListener('DOMContentLoaded', () => {
   buildGrid();
   bindLoveHovers();
   loadAdminContent();
+  // Mobile : déplacer la citation en fin de page contact
+  if (window.innerWidth <= 768) {
+    const split = document.querySelector('#page-contact .split');
+    const quote = document.querySelector('#page-contact .ct-quote');
+    if (split && quote) split.appendChild(quote);
+  }
 });
 </script>
 </body>
