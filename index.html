@@ -1059,11 +1059,25 @@ function go(name) {
   current = name;
   disableHomeGestures();
   disableWelcomeGestures();
-  // Créer les iframes vidéo dès que la page lettre est visible
+  // Warmup Vimeo dès la page welcome (1.5s d'avance sur lettre)
+  if (name === 'welcome' && window._vimeoPreloadIds && !window._vmWarmupDone) {
+    window._vmWarmupDone = true;
+    const w = document.createElement('div');
+    w.style.cssText = 'position:fixed;top:0;left:0;width:1px;height:1px;overflow:hidden;opacity:0.01;pointer-events:none;z-index:-1;';
+    document.body.appendChild(w);
+    window._vimeoPreloadIds.forEach(vmId => {
+      const f = document.createElement('iframe');
+      f.src = `https://player.vimeo.com/video/${vmId}?autoplay=1&muted=1&loop=1&background=1&playsinline=1`;
+      f.allow = 'autoplay';
+      f.style.cssText = 'width:640px;height:360px;border:none;';
+      w.appendChild(f);
+    });
+  }
+  // Créer les vraies iframes dans #lp-media après la transition complète (0.55s → 600ms)
   if (name === 'lettre' && window._lettreMediaInit) {
     const init = window._lettreMediaInit;
     window._lettreMediaInit = null;
-    requestAnimationFrame(init);
+    setTimeout(init, 600);
   }
   if (name === 'home') {
     setTimeout(() => enableHomeGestures(), 800);
@@ -1123,6 +1137,8 @@ function bindLoveHovers(customData) {
     const d = customData ? customData[idx] : LOVE_DATA[idx];
     if (d) dataList[idx] = d;
   });
+  // Exposer les IDs Vimeo pour le warmup dans go()
+  window._vimeoPreloadIds = Object.values(dataList).map(d => getVimeoId(d.media||'')).filter(Boolean);
 
   // Créer les iframes quand la page est visible (opacity:1) — sinon le navigateur mobile ne les charge pas
   const initMediaCache = () => {
