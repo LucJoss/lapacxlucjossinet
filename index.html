@@ -202,6 +202,7 @@ body.p-contact #nav{background:#ffff00;color:#000;}
 .lp-cat{font-size:9px;letter-spacing:.25em;text-transform:uppercase;color:rgba(255,255,255,.55);margin-bottom:5px;}
 .lp-title{font-size:22px;font-weight:900;color:#fff;line-height:1.1;}
 .lp-detail{font-size:11px;color:rgba(255,255,255,.5);margin-top:5px;}
+.lp-play{display:none;}
 
 /* ════════════════════════════════════════
    CV — BLUE
@@ -582,15 +583,33 @@ body.user-jerome   .welcome-hint{color:rgba(255,255,255,.35);}
   }
   .col-right{flex-shrink:0;overflow-y:visible;padding:28px 20px;order:1;}
 
-  /* Vidéos — tap-to-play inline sous l'item */
+  /* Vidéos — carte inline sous l'item */
   .love-preview{
     display:none;
     margin:4px 0 8px;
     position:relative;
     opacity:0;
-    transition:opacity .25s;
+    transition:opacity .3s;
   }
   .love-preview.on{opacity:1;}
+  .lp-inner{
+    background:linear-gradient(to top,rgba(0,0,0,.9) 0%,rgba(0,0,0,.35) 100%);
+    padding:16px;
+    justify-content:flex-end;
+  }
+  .lp-cat{font-size:8px;margin-bottom:6px;}
+  .lp-title{font-size:17px;line-height:1.15;}
+  .lp-detail{font-size:10px;margin-top:4px;margin-bottom:12px;color:rgba(255,255,255,.6);}
+  .lp-play{
+    display:inline-flex;align-items:center;gap:6px;
+    color:#fff;text-decoration:none;
+    font-size:10px;font-weight:800;letter-spacing:.18em;
+    border:1.5px solid rgba(255,255,255,.7);
+    padding:7px 14px;
+    align-self:flex-start;
+    transition:background .2s,color .2s;
+  }
+  .lp-play:active{background:#fff;color:#000;}
   .love-item{position:relative;}
   .love-item::after{
     content:'▷';
@@ -761,6 +780,7 @@ body.user-jerome   .welcome-hint{color:rgba(255,255,255,.35);}
           <div class="lp-cat" id="lp-cat"></div>
           <div class="lp-title" id="lp-title"></div>
           <div class="lp-detail" id="lp-detail"></div>
+          <a class="lp-play" id="lp-play" target="_blank" rel="noopener noreferrer">▶ &nbsp;VOIR</a>
         </div>
       </div>
     </div>
@@ -1088,6 +1108,7 @@ function bindLoveHovers(customData) {
     const vmId = getVimeoId(media);
     const t = toSeconds(d.mediaStart);
     const HIDDEN = 'position:absolute;inset:0;width:100%;height:100%;border:none;pointer-events:none;visibility:hidden;';
+    const mobile = window.innerWidth <= 768;
     if (isVideoFile(media)) {
       const v = document.createElement('video');
       v.src = media;
@@ -1096,14 +1117,14 @@ function bindLoveHovers(customData) {
       v.style.cssText = HIDDEN + 'object-fit:cover;';
       mediaEl.appendChild(v);
       mediaCache[idx] = v;
-    } else if (vmId) {
+    } else if (vmId && !mobile) {
       const f = document.createElement('iframe');
       f.src = `https://player.vimeo.com/video/${vmId}?autoplay=1&muted=1&loop=1&background=1#t=${t}s`;
       f.allow = 'autoplay';
       f.style.cssText = HIDDEN;
       mediaEl.appendChild(f);
       mediaCache[idx] = f;
-    } else if (ytId) {
+    } else if (ytId && !mobile) {
       const f = document.createElement('iframe');
       f.src = `https://www.youtube.com/embed/${ytId}?autoplay=1&mute=1&loop=1&playlist=${ytId}&start=${t}`;
       f.allow = 'autoplay; encrypted-media';
@@ -1124,21 +1145,29 @@ function bindLoveHovers(customData) {
     ldetail.textContent = d.detail || d.sub || '';
     hideAll();
     const media = d.media || '';
+    // Bouton "Voir" — Vimeo ou YouTube
+    const playEl = document.getElementById('lp-play');
+    if (playEl) {
+      const vmId = getVimeoId(media), ytId = getYtId(media);
+      if (vmId || ytId) {
+        playEl.href = vmId ? `https://vimeo.com/${vmId}` : `https://youtu.be/${ytId}`;
+        playEl.style.display = '';
+      } else {
+        playEl.style.display = 'none';
+      }
+    }
+    // Fond gradient immédiat
+    preview.style.background = d.bg || FALLBACK_BG;
+    // Overlay media si disponible en cache (desktop)
     if (media && mediaCache[idx]) {
-      preview.style.background = d.bg || FALLBACK_BG;
       mediaCache[idx].style.visibility = 'visible';
-      preview.classList.add('on');
-    } else if (media) {
-      preview.style.background = d.bg || FALLBACK_BG;
+    } else if (media && !getVimeoId(media) && !getYtId(media)) {
       const img = document.createElement('img');
       img.src = media;
       img.style.cssText = 'position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block;';
       mediaEl.appendChild(img);
-      preview.classList.add('on');
-    } else {
-      preview.style.background = d.bg || FALLBACK_BG;
-      preview.classList.add('on');
     }
+    preview.classList.add('on');
   }
 
   items.forEach(item => {
