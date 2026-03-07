@@ -1160,7 +1160,7 @@ function bindLoveHovers(customData) {
         mediaCache[idx] = v;
       } else if (vmId) {
         const f = document.createElement('iframe');
-        f.src = `https://player.vimeo.com/video/${vmId}?autoplay=1&muted=1&loop=1&background=1&playsinline=1`;
+        f.src = `https://player.vimeo.com/video/${vmId}?autoplay=1&muted=1&loop=1&background=1&playsinline=1${t ? '#t=' + t + 's' : ''}`;
         f.allow = 'autoplay';
         f.style.cssText = HIDDEN;
         mediaEl.appendChild(f);
@@ -1203,12 +1203,11 @@ function bindLoveHovers(customData) {
       const el = mediaCache[idx];
       if (el.tagName === 'VIDEO') {
         el.currentTime = t;
-      } else if (t > 0) {
-        if (vmId) {
-          try { el.contentWindow.postMessage(JSON.stringify({method:'seekTo', value: t}), '*'); } catch(e) {}
-        } else if (window.innerWidth > 768) {
-          const s = el.src; el.src = ''; el.src = s;
-        }
+      } else if (vmId) {
+        // Toujours seeker pour Vimeo — remet au bon timestamp même si la vidéo a drifté
+        try { el.contentWindow.postMessage(JSON.stringify({method:'seekTo', value: t}), '*'); } catch(e) {}
+      } else if (t > 0 && window.innerWidth > 768) {
+        const s = el.src; el.src = ''; el.src = s;
       }
       el.style.opacity = '1';
     } else if (!ytId && !vmId) {
