@@ -1365,12 +1365,16 @@ function applyContent(d) {
           .replace(/je vous ai adressé une première lettre/gi, "j'ai adressé une lettre à Monsieur Denis");
         if (currentUser === 'valentin' && L.body) L.body = L.body
           .replace(/Laurence Delbasty et Valentin(?:\s+Gozet)?/g, 'vous-même et Laurence')
+          .replace(/Madame Delbasty avait eu la gentillesse/g, 'Laurence avait eu la gentillesse')
           .replace(/Madame Delbasty,/g, 'Laurence,')
           .replace(/je vous ai adressé une première lettre/gi, "j'ai adressé une lettre à Monsieur Denis");
       }
       // Correction post-traitement (s'applique aussi aux overrides localStorage)
       if (currentUser === 'laurence' && L.body) {
         L.body = L.body.replace(/Madame Delbasty avait eu la gentillesse/g, 'vous aviez eu la gentillesse');
+      }
+      if (currentUser === 'valentin' && L.body) {
+        L.body = L.body.replace(/Madame Delbasty avait eu la gentillesse/g, 'Laurence avait eu la gentillesse');
       }
       const scroll = document.getElementById('lettre-scroll');
       if (scroll) {
