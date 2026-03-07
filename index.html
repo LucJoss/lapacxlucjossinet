@@ -190,6 +190,22 @@ body.p-contact #nav{background:#ffff00;color:#000;}
   position:relative;
 }
 .love-preview.on{opacity:1;}
+#lp-loader{
+  position:absolute;inset:0;
+  display:flex;align-items:center;justify-content:center;
+  opacity:0;transition:opacity .3s;
+  pointer-events:none;
+}
+#lp-loader.on{opacity:1;}
+#lp-loader::after{
+  content:'';
+  width:28px;height:28px;
+  border:2px solid rgba(255,255,255,.25);
+  border-top-color:#fff;
+  border-radius:50%;
+  animation:lp-spin .8s linear infinite;
+}
+@keyframes lp-spin{to{transform:rotate(360deg);}}
 #lp-media{position:absolute;inset:0;overflow:hidden;}
 #lp-media img{width:100%;height:100%;object-fit:cover;display:block;}
 #lp-media iframe{width:100%;height:100%;border:none;display:block;pointer-events:none;}
@@ -789,6 +805,7 @@ body.user-jerome   .welcome-hint{color:rgba(255,255,255,.35);}
 
       <div class="love-preview" id="love-preview">
         <div id="lp-media"></div>
+        <div id="lp-loader"></div>
         <div class="lp-inner" id="lp-inner">
           <div class="lp-cat" id="lp-cat"></div>
           <div class="lp-title" id="lp-title"></div>
@@ -1118,6 +1135,7 @@ function bindLoveHovers(customData) {
   const items = document.querySelectorAll('.love-item');
   const preview = document.getElementById('love-preview');
   const mediaEl = document.getElementById('lp-media');
+  const loader = document.getElementById('lp-loader');
   const lcat = document.getElementById('lp-cat');
   const ltitle = document.getElementById('lp-title');
   const ldetail = document.getElementById('lp-detail');
@@ -1207,6 +1225,23 @@ function bindLoveHovers(customData) {
         const s = el.src; el.src = ''; el.src = s;
       }
       el.style.opacity = '1';
+      if (el.tagName === 'IFRAME') {
+        loader.classList.add('on');
+        let _onMsg;
+        const _t = setTimeout(() => { loader.classList.remove('on'); window.removeEventListener('message', _onMsg); }, 3000);
+        _onMsg = function(e) {
+          if (e.source !== el.contentWindow) return;
+          try {
+            const data = JSON.parse(e.data);
+            if (data.event === 'timeupdate' || data.event === 'play') {
+              loader.classList.remove('on');
+              clearTimeout(_t);
+              window.removeEventListener('message', _onMsg);
+            }
+          } catch(_) {}
+        };
+        window.addEventListener('message', _onMsg);
+      }
     } else if (!ytId && !vmId) {
       const img = document.createElement('img');
       img.src = media;
@@ -1228,6 +1263,7 @@ function bindLoveHovers(customData) {
       if (window.innerWidth <= 768) {
         if (lockedD === d) {
           lockedD = null;
+          loader.classList.remove('on');
           preview.classList.remove('on');
           setTimeout(() => {
             preview.style.display = 'none';
