@@ -563,8 +563,8 @@ body.user-jerome   .welcome-hint{color:rgba(255,255,255,.35);}
   .home-cta-line{display:none;}
   .home-name-line{font-size:clamp(48px,13vw,152px);}
 
-  /* Welcome — évite la coupure du nom */
-  .welcome-inner{padding:0 20px 40px;}
+  /* Welcome — évite la coupure du nom + espace barre navigateur iOS */
+  .welcome-inner{padding:0 20px max(80px, calc(56px + env(safe-area-inset-bottom)));}
   .welcome-name-text{font-size:clamp(40px,13vw,100px);}
   body.user-jerome #page-welcome::before{right:20px;}
 
