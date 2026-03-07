@@ -1119,7 +1119,7 @@ function bindLoveHovers(customData) {
     const ytId = getYtId(media);
     const vmId = getVimeoId(media);
     const t = toSeconds(d.mediaStart);
-    const HIDDEN = 'position:absolute;inset:0;width:100%;height:100%;border:none;pointer-events:none;visibility:hidden;';
+    const HIDDEN = 'position:absolute;inset:0;width:100%;height:100%;border:none;pointer-events:none;opacity:0;';
     if (isVideoFile(media)) {
       const v = document.createElement('video');
       v.src = media;
@@ -1146,7 +1146,7 @@ function bindLoveHovers(customData) {
   });
 
   function hideAll() {
-    Object.values(mediaCache).forEach(el => { el.style.visibility = 'hidden'; });
+    Object.values(mediaCache).forEach(el => { el.style.opacity = '0'; });
     [...mediaEl.querySelectorAll('img')].forEach(el => el.remove());
   }
 
@@ -1164,14 +1164,14 @@ function bindLoveHovers(customData) {
       const t = toSeconds(d.mediaStart);
       if (t > 0) {
         if (getVimeoId(media)) {
-          // Vimeo : seek sans rechargement via postMessage
+          // Vimeo : seek via postMessage (sans rechargement)
           try { el.contentWindow.postMessage(JSON.stringify({method:'seekTo', value: t}), '*'); } catch(e) {}
-        } else {
-          // YouTube : reset src → redémarre depuis &start=t
+        } else if (window.innerWidth > 768) {
+          // YouTube sur desktop seulement : reset src (trop lent sur mobile)
           const s = el.src; el.src = ''; el.src = s;
         }
       }
-      el.style.visibility = 'visible';
+      el.style.opacity = '1';
     } else if (media && !getVimeoId(media) && !getYtId(media)) {
       const img = document.createElement('img');
       img.src = media;
