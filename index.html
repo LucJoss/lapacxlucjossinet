@@ -202,7 +202,6 @@ body.p-contact #nav{background:#ffff00;color:#000;}
 .lp-cat{font-size:9px;letter-spacing:.25em;text-transform:uppercase;color:rgba(255,255,255,.55);margin-bottom:5px;}
 .lp-title{font-size:22px;font-weight:900;color:#fff;line-height:1.1;}
 .lp-detail{font-size:11px;color:rgba(255,255,255,.5);margin-top:5px;}
-.lp-play{display:none;}
 
 /* ════════════════════════════════════════
    CV — BLUE
@@ -585,13 +584,16 @@ body.user-jerome   .welcome-hint{color:rgba(255,255,255,.35);}
 
   /* Vidéos — carte inline sous l'item */
   .love-preview{
-    display:none;
-    margin:4px 0 8px;
+    height:0;overflow:hidden;pointer-events:none;
+    margin:0;
     position:relative;
     opacity:0;
     transition:opacity .3s;
   }
-  .love-preview.on{opacity:1;}
+  .love-preview.on{
+    height:56.25vw;opacity:1;pointer-events:auto;
+    margin:4px 0 8px;
+  }
   .lp-inner{
     background:linear-gradient(to top,rgba(0,0,0,.9) 0%,rgba(0,0,0,.35) 100%);
     padding:16px;
@@ -780,7 +782,6 @@ body.user-jerome   .welcome-hint{color:rgba(255,255,255,.35);}
           <div class="lp-cat" id="lp-cat"></div>
           <div class="lp-title" id="lp-title"></div>
           <div class="lp-detail" id="lp-detail"></div>
-          <a class="lp-play" id="lp-play" target="_blank" rel="noopener noreferrer">▶ &nbsp;VOIR</a>
         </div>
       </div>
     </div>
@@ -1108,7 +1109,6 @@ function bindLoveHovers(customData) {
     const vmId = getVimeoId(media);
     const t = toSeconds(d.mediaStart);
     const HIDDEN = 'position:absolute;inset:0;width:100%;height:100%;border:none;pointer-events:none;visibility:hidden;';
-    const mobile = window.innerWidth <= 768;
     if (isVideoFile(media)) {
       const v = document.createElement('video');
       v.src = media;
@@ -1117,14 +1117,14 @@ function bindLoveHovers(customData) {
       v.style.cssText = HIDDEN + 'object-fit:cover;';
       mediaEl.appendChild(v);
       mediaCache[idx] = v;
-    } else if (vmId && !mobile) {
+    } else if (vmId) {
       const f = document.createElement('iframe');
       f.src = `https://player.vimeo.com/video/${vmId}?autoplay=1&muted=1&loop=1&background=1#t=${t}s`;
       f.allow = 'autoplay';
       f.style.cssText = HIDDEN;
       mediaEl.appendChild(f);
       mediaCache[idx] = f;
-    } else if (ytId && !mobile) {
+    } else if (ytId) {
       const f = document.createElement('iframe');
       f.src = `https://www.youtube.com/embed/${ytId}?autoplay=1&mute=1&loop=1&playlist=${ytId}&start=${t}`;
       f.allow = 'autoplay; encrypted-media';
@@ -1145,17 +1145,6 @@ function bindLoveHovers(customData) {
     ldetail.textContent = d.detail || d.sub || '';
     hideAll();
     const media = d.media || '';
-    // Bouton "Voir" — Vimeo ou YouTube
-    const playEl = document.getElementById('lp-play');
-    if (playEl) {
-      const vmId = getVimeoId(media), ytId = getYtId(media);
-      if (vmId || ytId) {
-        playEl.href = vmId ? `https://vimeo.com/${vmId}` : `https://youtu.be/${ytId}`;
-        playEl.style.display = '';
-      } else {
-        playEl.style.display = 'none';
-      }
-    }
     // Fond gradient immédiat
     preview.style.background = d.bg || FALLBACK_BG;
     // Overlay media si disponible en cache (desktop)
