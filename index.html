@@ -1204,6 +1204,13 @@ function bindLoveHovers(customData) {
           lockedD = d;
           item.after(preview);
           preview.style.display = 'block';
+          // Play synchrone dans le contexte du geste (iOS Safari bloque play hors geste)
+          const mc = mediaCache[idx];
+          if (mc && mc.tagName === 'IFRAME') {
+            try { mc.contentWindow.postMessage(JSON.stringify({method:'play'}), '*'); } catch(e) {}
+          } else if (mc && mc.tagName === 'VIDEO') {
+            mc.play().catch(() => {});
+          }
           requestAnimationFrame(() => showPreview(d, idx));
         }
         return;
