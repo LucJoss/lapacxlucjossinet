@@ -582,13 +582,13 @@ body.user-jerome   .welcome-hint{color:rgba(255,255,255,.35);}
   }
   .col-right{flex-shrink:0;overflow-y:visible;padding:28px 20px;order:1;}
 
-  /* Vidéos — tap-to-play inline */
+  /* Vidéos — tap-to-play inline sous l'item */
   .love-preview{
-    display:block;
-    margin-top:20px;
+    display:none;
+    margin:4px 0 8px;
     position:relative;
     opacity:0;
-    transition:opacity .3s;
+    transition:opacity .25s;
   }
   .love-preview.on{opacity:1;}
   .love-item{position:relative;}
@@ -1145,13 +1145,28 @@ function bindLoveHovers(customData) {
     const idx = parseInt(item.dataset.idx);
     const d = dataList[idx];
     if (!d) return;
-    item.addEventListener('mouseenter', () => { if (!lockedD) showPreview(d, idx); });
+    item.addEventListener('mouseenter', () => { if (window.innerWidth > 768 && !lockedD) showPreview(d, idx); });
     item.addEventListener('mouseleave', () => {
-      if (lockedD) return;
-      hideAll();
-      preview.classList.remove('on');
+      if (window.innerWidth > 768 && !lockedD) { hideAll(); preview.classList.remove('on'); }
     });
     item.addEventListener('click', () => {
+      if (window.innerWidth <= 768) {
+        if (lockedD === d) {
+          lockedD = null;
+          preview.classList.remove('on');
+          setTimeout(() => {
+            preview.style.display = 'none';
+            item.closest('.col-right').appendChild(preview);
+          }, 250);
+        } else {
+          if (lockedD) { preview.classList.remove('on'); preview.style.display = 'none'; }
+          lockedD = d;
+          item.after(preview);
+          preview.style.display = 'block';
+          requestAnimationFrame(() => showPreview(d, idx));
+        }
+        return;
+      }
       lockedD = (lockedD === d) ? null : d;
       if (lockedD) showPreview(lockedD, idx);
       else { hideAll(); preview.classList.remove('on'); }
