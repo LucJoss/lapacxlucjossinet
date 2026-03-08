@@ -195,6 +195,7 @@ body.p-contact #nav{background:#ffff00;color:#000;}
   display:flex;align-items:center;justify-content:center;
   opacity:0;transition:opacity .3s;
   pointer-events:none;
+  background:inherit;
 }
 #lp-loader.on{opacity:1;}
 #lp-loader::after{
@@ -1243,16 +1244,16 @@ function bindLoveHovers(customData) {
       } else if (t > 0 && window.innerWidth > 768) {
         const s = el.src; el.src = ''; el.src = s;
       }
-      el.style.opacity = '1';
       if (el.tagName === 'IFRAME') {
         loader.classList.add('on');
         let _onMsg;
-        const _t = setTimeout(() => { loader.classList.remove('on'); window.removeEventListener('message', _onMsg); }, 3000);
+        const _t = setTimeout(() => { el.style.opacity = '1'; loader.classList.remove('on'); window.removeEventListener('message', _onMsg); }, 3000);
         _onMsg = function(e) {
           if (e.source !== el.contentWindow) return;
           try {
             const data = JSON.parse(e.data);
             if (data.event === 'timeupdate' || data.event === 'play') {
+              el.style.opacity = '1';
               loader.classList.remove('on');
               clearTimeout(_t);
               window.removeEventListener('message', _onMsg);
@@ -1260,6 +1261,8 @@ function bindLoveHovers(customData) {
           } catch(_) {}
         };
         window.addEventListener('message', _onMsg);
+      } else {
+        el.style.opacity = '1';
       }
     } else if (!ytId && !vmId) {
       const img = document.createElement('img');
