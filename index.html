@@ -206,8 +206,10 @@ body.p-contact #nav{background:#ffff00;color:#000;}
   animation:lp-spin .8s linear infinite;
 }
 @keyframes lp-spin{to{transform:rotate(360deg);}}
-#lp-loader.no-spin{background:inherit;}
-#lp-loader.no-spin::after{display:none;}
+@media(min-width:769px){
+  #lp-loader.on{background:inherit;}
+  #lp-loader::after{display:none;}
+}
 #lp-media{position:absolute;inset:0;overflow:hidden;}
 #lp-media img{width:100%;height:100%;object-fit:cover;display:block;}
 #lp-media iframe{width:100%;height:100%;border:none;display:block;pointer-events:none;}
@@ -1246,32 +1248,33 @@ function bindLoveHovers(customData) {
         const s = el.src; el.src = ''; el.src = s;
       }
       el.style.opacity = '1';
-      if (el.tagName === 'IFRAME' && window.innerWidth > 768) {
-        // Desktop : apparition instantanée du couvercle, puis fade-out après 400ms
-        loader.style.transition = 'none';
-        loader.classList.add('on', 'no-spin');
-        requestAnimationFrame(() => {
-          loader.style.transition = '';
-          setTimeout(() => { loader.classList.remove('on', 'no-spin'); }, 400);
-        });
-      } else if (el.tagName === 'IFRAME') {
-        // Mobile : loader avec spinner + attente event Vimeo
-        loader.classList.add('on');
-        let _onMsg;
-        const _t = setTimeout(() => { el.style.opacity = '1'; loader.classList.remove('on'); window.removeEventListener('message', _onMsg); }, 3000);
-        _onMsg = function(e) {
-          if (e.source !== el.contentWindow) return;
-          try {
-            const data = JSON.parse(e.data);
-            if (data.event === 'timeupdate' || data.event === 'play') {
-              el.style.opacity = '1';
-              loader.classList.remove('on');
-              clearTimeout(_t);
-              window.removeEventListener('message', _onMsg);
-            }
-          } catch(_) {}
-        };
-        window.addEventListener('message', _onMsg);
+      if (el.tagName === 'IFRAME') {
+        if (window.innerWidth > 768) {
+          // Desktop : couvercle instantané (fond = gradient du bloc, pas de spinner), retire après 400ms
+          loader.style.transition = 'none';
+          loader.classList.add('on');
+          requestAnimationFrame(() => {
+            loader.style.transition = '';
+            setTimeout(() => loader.classList.remove('on'), 400);
+          });
+        } else {
+          // Mobile : spinner + attente event Vimeo
+          loader.classList.add('on');
+          let _onMsg;
+          const _t = setTimeout(() => { loader.classList.remove('on'); window.removeEventListener('message', _onMsg); }, 3000);
+          _onMsg = function(e) {
+            if (e.source !== el.contentWindow) return;
+            try {
+              const data = JSON.parse(e.data);
+              if (data.event === 'timeupdate' || data.event === 'play') {
+                loader.classList.remove('on');
+                clearTimeout(_t);
+                window.removeEventListener('message', _onMsg);
+              }
+            } catch(_) {}
+          };
+          window.addEventListener('message', _onMsg);
+        }
       }
     } else if (!ytId && !vmId) {
       const img = document.createElement('img');
