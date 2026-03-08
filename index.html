@@ -1247,9 +1247,13 @@ function bindLoveHovers(customData) {
       }
       el.style.opacity = '1';
       if (el.tagName === 'IFRAME' && window.innerWidth > 768) {
-        // Desktop : loader sans spinner pour couvrir la miniature, retiré après 400ms
+        // Desktop : apparition instantanée du couvercle, puis fade-out après 400ms
+        loader.style.transition = 'none';
         loader.classList.add('on', 'no-spin');
-        setTimeout(() => { loader.classList.remove('on', 'no-spin'); }, 400);
+        requestAnimationFrame(() => {
+          loader.style.transition = '';
+          setTimeout(() => { loader.classList.remove('on', 'no-spin'); }, 400);
+        });
       } else if (el.tagName === 'IFRAME') {
         // Mobile : loader avec spinner + attente event Vimeo
         loader.classList.add('on');
