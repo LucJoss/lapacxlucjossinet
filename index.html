@@ -677,7 +677,7 @@ body.user-jerome   .welcome-hint{color:rgba(255,255,255,.35);}
   }
   .ct-sp{display:none;}
   .ct-title{font-size:clamp(22px,7vw,36px);margin-bottom:20px;}
-  .ct-infos{margin-bottom:20px;order:-1;}
+  .ct-infos{margin-bottom:20px;}
   .ct-quote{flex-shrink:0;order:3;font-size:clamp(13px,3.5vw,16px);padding:16px 20px 48px;}
 
   .contact-left{
@@ -1762,17 +1762,17 @@ window.addEventListener('DOMContentLoaded', () => {
   bindLoveHovers();
   loadAdminContent();
   if (window.innerWidth <= 768) {
-    // Contact — réordonner : titre → photo + caption → infos → citation → ct-left-infos
+    // Contact mobile — ordre : titre → photo → caption → message → infos → citation → ct-left-infos
     const contactRight = document.querySelector('#page-contact .contact-right');
     const contactLeft  = document.querySelector('#page-contact .contact-left');
     const split        = document.querySelector('#page-contact .split');
     const photo        = document.querySelector('#page-contact .contact-photo');
     const caption      = document.querySelector('#page-contact .contact-photo-caption');
-    const infos        = document.querySelector('#page-contact #ct-infos');
+    const message      = document.querySelector('#page-contact .ct-message');
     const quote        = document.querySelector('#page-contact .ct-quote');
     const leftInfos    = document.querySelector('#page-contact .ct-left-infos');
-    if (contactRight && photo && caption && infos) {
-      contactRight.insertBefore(caption, infos);
+    if (contactRight && photo && caption && message) {
+      contactRight.insertBefore(caption, message);
       contactRight.insertBefore(photo, caption);
     }
     if (split && quote) split.appendChild(quote);
