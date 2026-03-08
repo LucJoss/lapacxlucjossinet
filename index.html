@@ -1047,6 +1047,11 @@ const USERS = {
   valentin: 'VALENTIN',
   jerome:   'JÉRÔME'
 };
+const PASSWORDS = {
+  'love/story':   'laurence',
+  'replay!':      'valentin',
+  'mugler-elixir':'jerome'
+};
 
 function go(name) {
   if (!PAGES.includes(name)) return;
@@ -1335,9 +1340,10 @@ function checkPassword() {
   const input = document.getElementById('pw-input');
   const err   = document.getElementById('pw-error');
   const val   = input.value.trim().toLowerCase();
-  if (USERS[val]) {
-    currentUser = val;
-    document.body.classList.add('user-' + val);
+  const userKey = PASSWORDS[val];
+  if (userKey) {
+    currentUser = userKey;
+    document.body.classList.add('user-' + userKey);
     loadAdminContent();
     const screen = document.getElementById('password-screen');
     const pageHome = document.getElementById('page-home');
