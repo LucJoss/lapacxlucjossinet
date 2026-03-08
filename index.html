@@ -1248,30 +1248,23 @@ function bindLoveHovers(customData) {
         const s = el.src; el.src = ''; el.src = s;
       }
       el.style.opacity = '1';
-      if (el.tagName === 'IFRAME') {
-        if (window.innerWidth > 768) {
-          // Desktop : couvercle instantané (fond = gradient du bloc, pas de spinner), retire après 400ms
-          loader.style.transition = 'none';
-          loader.classList.add('on');
-          setTimeout(() => { loader.classList.remove('on'); loader.style.transition = ''; }, 400);
-        } else {
-          // Mobile : spinner + attente event Vimeo
-          loader.classList.add('on');
-          let _onMsg;
-          const _t = setTimeout(() => { loader.classList.remove('on'); window.removeEventListener('message', _onMsg); }, 3000);
-          _onMsg = function(e) {
-            if (e.source !== el.contentWindow) return;
-            try {
-              const data = JSON.parse(e.data);
-              if (data.event === 'timeupdate' || data.event === 'play') {
-                loader.classList.remove('on');
-                clearTimeout(_t);
-                window.removeEventListener('message', _onMsg);
-              }
-            } catch(_) {}
-          };
-          window.addEventListener('message', _onMsg);
-        }
+      if (el.tagName === 'IFRAME' && window.innerWidth <= 768) {
+        // Mobile : spinner + attente event Vimeo
+        loader.classList.add('on');
+        let _onMsg;
+        const _t = setTimeout(() => { loader.classList.remove('on'); window.removeEventListener('message', _onMsg); }, 3000);
+        _onMsg = function(e) {
+          if (e.source !== el.contentWindow) return;
+          try {
+            const data = JSON.parse(e.data);
+            if (data.event === 'timeupdate' || data.event === 'play') {
+              loader.classList.remove('on');
+              clearTimeout(_t);
+              window.removeEventListener('message', _onMsg);
+            }
+          } catch(_) {}
+        };
+        window.addEventListener('message', _onMsg);
       }
     } else if (!ytId && !vmId) {
       const img = document.createElement('img');
