@@ -1245,7 +1245,8 @@ function bindLoveHovers(customData) {
         const s = el.src; el.src = ''; el.src = s;
       }
       if (el.tagName === 'IFRAME') {
-        loader.classList.add('on');
+        const isMobile = window.innerWidth <= 768;
+        if (isMobile) loader.classList.add('on');
         let _onMsg;
         const _t = setTimeout(() => { el.style.opacity = '1'; loader.classList.remove('on'); window.removeEventListener('message', _onMsg); }, 3000);
         _onMsg = function(e) {
