@@ -206,6 +206,8 @@ body.p-contact #nav{background:#ffff00;color:#000;}
   animation:lp-spin .8s linear infinite;
 }
 @keyframes lp-spin{to{transform:rotate(360deg);}}
+#lp-loader.no-spin{background:inherit;}
+#lp-loader.no-spin::after{display:none;}
 #lp-media{position:absolute;inset:0;overflow:hidden;}
 #lp-media img{width:100%;height:100%;object-fit:cover;display:block;}
 #lp-media iframe{width:100%;height:100%;border:none;display:block;pointer-events:none;}
@@ -1243,12 +1245,13 @@ function bindLoveHovers(customData) {
       } else if (t > 0 && window.innerWidth > 768) {
         const s = el.src; el.src = ''; el.src = s;
       }
+      el.style.opacity = '1';
       if (el.tagName === 'IFRAME' && window.innerWidth > 768) {
-        // Desktop : délai pour laisser Vimeo rendre la vidéo avant d'afficher l'iframe
-        el.style.transition = 'opacity 0.3s';
-        setTimeout(() => { el.style.opacity = '1'; }, 350);
+        // Desktop : loader sans spinner pour couvrir la miniature, retiré après 400ms
+        loader.classList.add('on', 'no-spin');
+        setTimeout(() => { loader.classList.remove('on', 'no-spin'); }, 400);
       } else if (el.tagName === 'IFRAME') {
-        // Mobile : loader + attente event Vimeo
+        // Mobile : loader avec spinner + attente event Vimeo
         loader.classList.add('on');
         let _onMsg;
         const _t = setTimeout(() => { el.style.opacity = '1'; loader.classList.remove('on'); window.removeEventListener('message', _onMsg); }, 3000);
@@ -1265,8 +1268,6 @@ function bindLoveHovers(customData) {
           } catch(_) {}
         };
         window.addEventListener('message', _onMsg);
-      } else {
-        el.style.opacity = '1';
       }
     } else if (!ytId && !vmId) {
       const img = document.createElement('img');
