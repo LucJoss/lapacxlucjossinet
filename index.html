@@ -1244,9 +1244,9 @@ function bindLoveHovers(customData) {
         const s = el.src; el.src = ''; el.src = s;
       }
       if (el.tagName === 'IFRAME' && window.innerWidth > 768) {
-        // Desktop : fade-in rapide sans spinner, le fond coloré couvre la miniature
-        el.style.transition = 'opacity 0.25s';
-        setTimeout(() => { el.style.opacity = '1'; }, 60);
+        // Desktop : délai pour laisser Vimeo rendre la vidéo avant d'afficher l'iframe
+        el.style.transition = 'opacity 0.3s';
+        setTimeout(() => { el.style.opacity = '1'; }, 350);
       } else if (el.tagName === 'IFRAME') {
         // Mobile : loader + attente event Vimeo
         loader.classList.add('on');
