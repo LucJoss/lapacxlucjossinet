@@ -1237,7 +1237,7 @@ body.user-jerome   .welcome-hint{color:rgba(255,255,255,.35);}
         <p class="strat-levier-text">Des projections, tables rondes ou sessions de networking attirent directement des directeurs de production seniors. Chaque événement génère 2 à 3 posts LinkedIn avec des photos, un compte-rendu, des tags de participants professionnels. C'est une des seules façons de convertir des pairs en abonnés réels, et de leur donner une raison concrète de suivre LA\PAC au-delà du travail.</p>
       </div>
 
-      <p class="strat-levier-text" style="font-style:italic;padding:20px 0;border-top:1px solid rgba(255,255,255,.08);margin-top:8px;color:rgba(255,255,255,.4);">Le document qui suit détaille chacun de ces axes&nbsp;: benchmark complet, formats, axes de contenu, profils à activer, partenariats et mécanique cross-comptes.</p>
+      <p class="strat-levier-text" style="font-style:italic;padding:12px 0 0 0;color:rgba(255,255,255,.4);">Le document qui suit détaille chacun de ces axes&nbsp;: benchmark complet, formats, axes de contenu, profils à activer, partenariats et mécanique cross-comptes.</p>
     </div>
 
     <!-- ACCORDION ANALYSE COMPLÈTE -->
@@ -2020,7 +2020,7 @@ document.addEventListener('mousemove', e => {
 document.addEventListener('mouseover', e => {
   const tag = e.target.tagName;
   const isText = TEXT_TAGS.includes(tag) && e.target.childElementCount === 0 && e.target.textContent.trim().length > 0;
-  const isBigZone = !!e.target.closest('.ct-title, .ct-quote, .lettre-q, .lettre-sign, .li-title, .li-sub, .cv-title, .cv-date, .cv-org, .cv-desc, .cv-tags, .sk-cat-title, .sk-pills, .cv-name, .cv-role, .nav-link, .logo');
+  const isBigZone = !!e.target.closest('.ct-title, .ct-quote, .lettre-q, .lettre-sign, .li-title, .li-sub, .cv-title, .cv-date, .cv-org, .cv-desc, .cv-tags, .sk-cat-title, .sk-pills, .cv-name, .cv-role, .nav-link, .logo, .strat-levier-title, .strat-levier-text, .strat-doc-p, .strat-doc-h3, .strat-callout-text, .strat-resume-intro, .strat-comp-text, .strat-comp-name, .strat-doc-h4');
   if (isText || isBigZone) {
     cursor.classList.add('big');
   } else {
