@@ -2020,7 +2020,7 @@ document.addEventListener('mousemove', e => {
 document.addEventListener('mouseover', e => {
   const tag = e.target.tagName;
   const isText = TEXT_TAGS.includes(tag) && e.target.childElementCount === 0 && e.target.textContent.trim().length > 0;
-  const isBigZone = !!e.target.closest('.ct-title, .ct-quote, .lettre-q, .lettre-sign, .li-title, .li-sub, .cv-title, .cv-date, .cv-org, .cv-desc, .cv-tags, .sk-cat-title, .sk-pills, .cv-name, .cv-role, .nav-link, .logo, .strat-levier-title, .strat-levier-text, .strat-doc-p, .strat-doc-h3, .strat-callout-text, .strat-resume-intro, .strat-comp-text, .strat-comp-name, .strat-doc-h4');
+  const isBigZone = !!e.target.closest('.ct-title, .ct-quote, .lettre-q, .lettre-sign, .li-title, .li-sub, .cv-title, .cv-date, .cv-org, .cv-desc, .cv-tags, .sk-cat-title, .sk-pills, .cv-name, .cv-role, .nav-link, .logo, .strat-inner');
   if (isText || isBigZone) {
     cursor.classList.add('big');
   } else {
