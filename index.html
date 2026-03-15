@@ -504,8 +504,16 @@ body.p-strategie #nav{background:#000;color:#fff;border-bottom:1px solid rgba(25
 .strat-title span{color:#ff0000;}
 .strat-subtitle{
   font-size:15px;font-weight:400;letter-spacing:.005em;
-  color:rgba(255,255,255,.55);margin-bottom:64px;line-height:1.75;
+  color:rgba(255,255,255,.55);margin-bottom:28px;line-height:1.75;
 }
+.strat-full-hint{
+  display:inline-block;margin-bottom:64px;
+  font-size:10px;font-weight:700;letter-spacing:.22em;text-transform:uppercase;
+  color:rgba(255,255,255,.35);text-decoration:none;
+  border-bottom:1px solid rgba(255,255,255,.15);padding-bottom:3px;
+  transition:color .2s,border-color .2s;
+}
+.strat-full-hint:hover{color:rgba(255,255,255,.7);border-color:rgba(255,255,255,.4);}
 
 .strat-section{margin-bottom:60px;}
 .strat-label{
@@ -1183,6 +1191,7 @@ body.user-jerome   .welcome-hint{color:rgba(255,255,255,.35);}
     <p class="strat-eyebrow">Luc Jossinet - Mars 2026</p>
     <h1 class="strat-title">STRATÉGIE<br><span>LINKEDIN</span></h1>
     <p class="strat-subtitle">Laurence, suite à notre appel vidéo, voici mon analyse en réponse à ta question. Il est délicat d'apporter des idées sans les ancrer dans une stratégie de communication globale : certaines d'entre elles touchent aux axes éditoriaux, aux événements, aux partenariats, et nécessitent une vision d'ensemble pour être efficaces.</p>
+    <a class="strat-full-hint" onclick="document.getElementById('strat-accordion').scrollIntoView({behavior:'smooth'});setTimeout(()=>{if(!document.getElementById('strat-accordion').classList.contains('open'))toggleAcc();},400);" href="#">Analyse complète disponible — 8 parties détaillées&ensp;↓</a>
 
     <!-- DIAGNOSTIC -->
     <div class="strat-section">
