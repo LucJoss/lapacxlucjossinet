@@ -480,6 +480,158 @@ body.p-lettre  #cursor{background:#ff0000;}
 body.p-cv      #cursor{background:#0000ff;}
 body.p-contact #cursor{background:#ffff00;}
 
+/* ════════════════════════════════════════
+   STRATÉGIE — WHITE
+════════════════════════════════════════ */
+body.p-strategie #nav{background:#fff;color:#000;border-bottom:1px solid rgba(0,0,0,.09);}
+body.p-strategie #cursor{background:#000;}
+
+#page-strategie{background:#fff;overflow-y:auto;overflow-x:hidden;}
+
+.strat-inner{
+  max-width:800px;
+  margin:0 auto;
+  padding:80px 52px 100px;
+}
+
+.strat-eyebrow{
+  font-size:9px;font-weight:700;letter-spacing:.28em;text-transform:uppercase;
+  color:rgba(0,0,0,.35);margin-bottom:18px;
+}
+.strat-title{
+  font-size:clamp(38px,5.5vw,76px);font-weight:900;color:#000;
+  line-height:.9;letter-spacing:-.03em;margin-bottom:12px;
+}
+.strat-title span{color:#ff0000;}
+.strat-subtitle{
+  font-size:13px;font-weight:500;letter-spacing:.01em;
+  color:rgba(0,0,0,.4);margin-bottom:64px;
+}
+
+.strat-section{margin-bottom:60px;}
+.strat-label{
+  font-size:9px;font-weight:700;letter-spacing:.28em;text-transform:uppercase;
+  color:rgba(0,0,0,.32);margin-bottom:20px;
+  padding-bottom:12px;border-bottom:1px solid rgba(0,0,0,.1);
+}
+.strat-intro{
+  font-size:16px;line-height:1.8;color:#000;font-weight:400;
+  letter-spacing:.005em;margin-bottom:0;
+}
+
+/* Benchmark */
+.strat-competitor{padding:22px 0;border-bottom:1px solid rgba(0,0,0,.08);}
+.strat-competitor:first-child{border-top:1px solid rgba(0,0,0,.08);}
+.strat-comp-header{display:flex;align-items:baseline;gap:14px;margin-bottom:8px;}
+.strat-comp-name{font-size:14px;font-weight:900;color:#000;letter-spacing:.02em;}
+.strat-comp-tag{font-size:9px;letter-spacing:.18em;text-transform:uppercase;color:#ff0000;font-weight:700;}
+.strat-comp-text{font-size:14px;line-height:1.8;color:rgba(0,0,0,.65);}
+.strat-comp-text strong{color:#000;font-weight:700;}
+
+/* Vide territory callout */
+.strat-callout{
+  background:#000;padding:28px 32px;margin:32px 0 0;
+}
+.strat-callout-title{font-size:11px;font-weight:900;letter-spacing:.2em;text-transform:uppercase;color:#ff0000;margin-bottom:10px;}
+.strat-callout-text{font-size:14px;line-height:1.75;color:#fff;font-weight:400;}
+
+/* Leviers */
+.strat-levier{padding:22px 0;border-bottom:1px solid rgba(0,0,0,.08);}
+.strat-levier:first-child{border-top:1px solid rgba(0,0,0,.08);}
+.strat-levier-title{font-size:14px;font-weight:900;color:#000;margin-bottom:8px;letter-spacing:-.005em;}
+.strat-levier-text{font-size:14px;line-height:1.8;color:rgba(0,0,0,.65);}
+.strat-levier-text em{font-style:italic;color:#000;}
+
+/* ─── ACCORDION ANALYSE COMPLÈTE ─── */
+.strat-accordion{margin-top:80px;border-top:2px solid #000;}
+.strat-acc-trigger{
+  width:100%;background:none;border:none;outline:none;
+  display:flex;align-items:center;justify-content:space-between;
+  padding:28px 0;cursor:none;font-family:inherit;
+}
+.strat-acc-trigger:hover .strat-acc-label{color:#ff0000;}
+.strat-acc-label{
+  font-size:11px;font-weight:900;letter-spacing:.25em;
+  text-transform:uppercase;color:#000;transition:color .2s;
+}
+.strat-acc-arrow{
+  font-size:16px;color:#ff0000;font-weight:900;
+  transition:transform .4s cubic-bezier(.16,1,.3,1);
+  display:inline-block;
+}
+.strat-accordion.open .strat-acc-arrow{transform:rotate(180deg);}
+.strat-acc-body{
+  display:none;padding-bottom:80px;
+  border-top:1px solid rgba(0,0,0,.1);
+  padding-top:20px;
+}
+.strat-accordion.open .strat-acc-body{display:block;}
+
+/* Full doc typography */
+.strat-doc-part{margin-bottom:52px;}
+.strat-doc-part-label{
+  font-size:9px;font-weight:700;letter-spacing:.28em;text-transform:uppercase;
+  color:#ff0000;margin-bottom:12px;
+}
+.strat-doc-h2{
+  font-size:19px;font-weight:900;color:#000;
+  letter-spacing:-.01em;margin-bottom:16px;
+}
+.strat-doc-h3{
+  font-size:13px;font-weight:800;color:#000;
+  letter-spacing:.03em;text-transform:uppercase;
+  margin:28px 0 10px;
+}
+.strat-doc-p{font-size:13.5px;line-height:1.85;color:rgba(0,0,0,.72);margin-bottom:12px;}
+.strat-doc-p strong{color:#000;font-weight:700;}
+.strat-doc-p em{font-style:italic;}
+.strat-doc-p a{color:#000;text-underline-offset:3px;}
+
+/* Stats block */
+.strat-stats{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:rgba(0,0,0,.08);margin:24px 0;}
+.strat-stat{background:#fff;padding:20px;}
+.strat-stat-num{font-size:32px;font-weight:900;color:#ff0000;line-height:1;letter-spacing:-.02em;margin-bottom:6px;}
+.strat-stat-label{font-size:11px;line-height:1.55;color:rgba(0,0,0,.65);}
+
+/* Benchmark table */
+.strat-table{width:100%;border-collapse:collapse;margin:16px 0;font-size:12px;}
+.strat-table th{font-size:8.5px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:rgba(0,0,0,.4);padding:10px 10px;border-bottom:2px solid rgba(0,0,0,.1);text-align:left;}
+.strat-table td{padding:12px 10px;border-bottom:1px solid rgba(0,0,0,.07);vertical-align:top;color:rgba(0,0,0,.75);line-height:1.5;}
+.strat-table td:first-child{font-weight:800;color:#000;}
+.strat-table tr:last-child td{border-bottom:none;}
+
+/* Axes */
+.strat-axe{padding:22px 0;border-bottom:1px solid rgba(0,0,0,.08);}
+.strat-axe:first-child{border-top:1px solid rgba(0,0,0,.08);}
+.strat-axe-num{font-size:9px;font-weight:700;letter-spacing:.2em;text-transform:uppercase;color:#ff0000;margin-bottom:5px;}
+.strat-axe-title{font-size:15px;font-weight:900;color:#000;margin-bottom:10px;letter-spacing:-.01em;}
+.strat-axe-text{font-size:13px;line-height:1.8;color:rgba(0,0,0,.65);}
+
+/* Person cards (employee advocacy) */
+.strat-person{padding:16px 0;border-bottom:1px solid rgba(0,0,0,.07);}
+.strat-person:first-child{border-top:1px solid rgba(0,0,0,.07);}
+.strat-person-name{font-size:13px;font-weight:900;color:#000;letter-spacing:.02em;}
+.strat-person-role{font-size:10px;color:rgba(0,0,0,.4);margin-top:2px;letter-spacing:.04em;}
+.strat-person-angle{font-size:12.5px;color:rgba(0,0,0,.6);margin-top:6px;line-height:1.5;}
+
+/* Sources */
+.strat-sources{margin-top:40px;padding-top:24px;border-top:1px solid rgba(0,0,0,.1);}
+.strat-sources-label{font-size:9px;font-weight:700;letter-spacing:.22em;text-transform:uppercase;color:rgba(0,0,0,.32);margin-bottom:16px;}
+.strat-source{font-size:11px;line-height:1.6;color:rgba(0,0,0,.45);margin-bottom:6px;}
+.strat-source a{color:rgba(0,0,0,.6);text-decoration:none;border-bottom:1px solid rgba(0,0,0,.2);}
+.strat-source a:hover{color:#ff0000;border-color:#ff0000;}
+
+@media(max-width:768px){
+  .strat-inner{padding:72px 20px 80px;}
+  .strat-stats{grid-template-columns:1fr;}
+  .strat-table{font-size:11px;}
+  .strat-table th,.strat-table td{padding:10px 6px;}
+}
+
+/* ─── SCROLLBARS ─── */
+#page-strategie::-webkit-scrollbar{width:3px;}
+#page-strategie::-webkit-scrollbar-thumb{background:rgba(0,0,0,.2);}
+
 /* ─── SCROLLBARS ─── */
 ::-webkit-scrollbar{width:3px;}
 ::-webkit-scrollbar-track{background:transparent;}
@@ -730,6 +882,7 @@ body.user-jerome   .welcome-hint{color:rgba(255,255,255,.35);}
   <span class="nav-link" id="nl-lettre" onclick="go('lettre')">LETTRE<span class="dot"></span></span>
   <span class="nav-link" id="nl-cv" onclick="go('cv')">CV<span class="dot"></span></span>
   <span class="nav-link" id="nl-contact" onclick="go('contact')">CONTACT<span class="dot"></span></span>
+  <span class="nav-link" id="nl-strategie" onclick="go('strategie')">STRATÉGIE<span class="dot"></span></span>
 </nav>
 
 <!-- ════ HOME ════ -->
@@ -1006,6 +1159,300 @@ body.user-jerome   .welcome-hint{color:rgba(255,255,255,.35);}
   </div>
 </div>
 
+<!-- ════ STRATÉGIE LINKEDIN ════ -->
+<div id="page-strategie" class="page">
+  <div class="strat-inner">
+
+    <p class="strat-eyebrow">Luc Jossinet — Mars 2026</p>
+    <h1 class="strat-title">STRATÉGIE<br><span>LINKEDIN</span></h1>
+    <p class="strat-subtitle">Community Manager &amp; Assistant de Communication — LA\PAC</p>
+
+    <!-- DIAGNOSTIC -->
+    <div class="strat-section">
+      <p class="strat-label">Le diagnostic</p>
+      <p class="strat-intro">Le problème n'est pas la fréquence de publication, c'est le contenu et les canaux. Aujourd'hui, la page LA\PAC publie comme tous ses concurrents&nbsp;: une image du film, une liste de crédits. Un directeur de production expérimenté scrolle sans s'arrêter. Ce format attire des étudiants qui admirent le travail, pas des pairs qui veulent travailler avec.</p>
+    </div>
+
+    <!-- BENCHMARK -->
+    <div class="strat-section">
+      <p class="strat-label">Benchmark rapide</p>
+
+      <div class="strat-competitor">
+        <div class="strat-comp-header">
+          <span class="strat-comp-name">ICONOCLAST</span>
+          <span class="strat-comp-tag">26 488 abonnés</span>
+        </div>
+        <p class="strat-comp-text">Format unique et systématique&nbsp;: une image du film, des crédits exhaustifs, 12–15 personnes taguées. Efficace pour la portée, pas pour l'engagement. <strong>Zéro prise de parole sectorielle, zéro conversation.</strong> Un dir de prod qui suit Iconoclast n'apprend rien. C'est pourtant la référence du secteur, et tout le monde l'imite.</p>
+      </div>
+
+      <div class="strat-competitor">
+        <div class="strat-comp-header">
+          <span class="strat-comp-name">PARTIZAN</span>
+          <span class="strat-comp-tag">20 647 abonnés</span>
+        </div>
+        <p class="strat-comp-text">Award stacking systématique — mécanique solide pour la crédibilité B2B. Aucune prise de position sur l'industrie. Fonctionnel pour maintenir une réputation, <strong>pas pour créer une audience engagée de professionnels.</strong></p>
+      </div>
+
+      <div class="strat-competitor">
+        <div class="strat-comp-header">
+          <span class="strat-comp-name">SIXTINE / JAN BELLETTI</span>
+          <span class="strat-comp-tag">La seule exception</span>
+        </div>
+        <p class="strat-comp-text">Jan Belletti, co-fondateur de Sixtine, a <strong>32 000 abonnés</strong> sur son profil personnel. La page Sixtine en a 8 852. Ses posts touchent directement des directeurs de production et des EP. Son post sur le rachat total de Coyote&nbsp;: <strong>564 réactions, 122 commentaires.</strong> C'est le public que LA\PAC cherche à atteindre. Personne chez Sixtine n'a répliqué ce qu'il fait. Personne chez LA\PAC non plus.</p>
+      </div>
+
+      <div class="strat-callout">
+        <div class="strat-callout-title">Territoire vide</div>
+        <p class="strat-callout-text">Aucune maison de production française ne publie de point de vue sur l'évolution du secteur. Pas Iconoclast, pas Partizan, pas Stink. C'est un territoire que LA\PAC peut prendre, et qu'aucun concurrent ne peut lui contester — avec 50 ans d'histoire et 100 Lions à Cannes.</p>
+      </div>
+    </div>
+
+    <!-- LEVIERS -->
+    <div class="strat-section">
+      <p class="strat-label">Les 5 leviers</p>
+
+      <div class="strat-levier">
+        <div class="strat-levier-title">01 — Activer les profils personnels des figures clés</div>
+        <p class="strat-levier-text">Les pages entreprises ne touchent que <strong>1,6% de leurs abonnés</strong>. Les profils personnels génèrent <strong>2,75× plus d'impressions</strong>. Quand Jérôme Denis ou Anna Roudaut publient en mentionnant LA\PAC, leur réseau de pairs voit passer le contenu. Fournir à chaque volontaire un kit mensuel d'idées à reformuler avec sa propre voix.</p>
+      </div>
+
+      <div class="strat-levier">
+        <div class="strat-levier-title">02 — Publier du contenu que les professionnels lisent jusqu'au bout</div>
+        <p class="strat-levier-text"><strong>86% des décideurs préfèrent du contenu qui challenge leur vision</strong> plutôt que du showcase. Un dir de prod senior lit <em>"Pourquoi les budgets pub ont chuté de 40% mais les exigences créatives ont doublé"</em>, il scrolle devant <em>"Voici notre dernière prod pour Hermès"</em>. Les carrousels PDF et posts texte longs surperforment l'image seule de <strong>38%</strong>.</p>
+      </div>
+
+      <div class="strat-levier">
+        <div class="strat-levier-title">03 — Utiliser l'écosystème du groupe</div>
+        <p class="strat-levier-text">LA\PAC a un avantage structurel qu'aucun concurrent n'a&nbsp;: quatre entités avec des audiences professionnelles complémentaires. VERY\CONTENT touche les social media managers. TERRE\TV les éditeurs et diffuseurs. 2001.ART les directeurs artistiques luxe. La mécanique cross-comptes expose chacune de ces audiences à LA\PAC sans publicité.</p>
+      </div>
+
+      <div class="strat-levier">
+        <div class="strat-levier-title">04 — S'appuyer sur des partenariats ciblés</div>
+        <p class="strat-levier-text">Les studios de post-production qui taguent LA\PAC sur leurs posts coulisses touchent techniciens et producteurs. Les agences (BETC, Publicis) qui repartagent un post co-signé exposent LA\PAC à leurs directeurs de création. Les médias sectoriels (CB News, Packshotmag) valident la légitimité auprès d'une audience B2B qualifiée. Dans tous ces cas, <strong>c'est l'audience de l'autre qui vient à LA\PAC.</strong></p>
+      </div>
+
+      <div class="strat-levier">
+        <div class="strat-levier-title">05 — Faire des événements du matériel éditorial</div>
+        <p class="strat-levier-text">Un "Plateau Ouvert" — projection, table ronde, networking — attire directement des directeurs de production seniors. Chaque événement génère 2 à 3 posts LinkedIn avec photos, compte-rendu, tags de participants. C'est une des seules façons de <strong>convertir des pairs en abonnés réels.</strong></p>
+      </div>
+    </div>
+
+    <!-- ACCORDION ANALYSE COMPLÈTE -->
+    <div class="strat-accordion" id="strat-accordion">
+      <button class="strat-acc-trigger" onclick="toggleAcc()" type="button">
+        <span class="strat-acc-label">Analyse complète — 8 parties</span>
+        <span class="strat-acc-arrow">↓</span>
+      </button>
+      <div class="strat-acc-body" id="strat-acc-body">
+
+        <!-- PARTIE 1 — ALGO -->
+        <div class="strat-doc-part">
+          <p class="strat-doc-part-label">Partie 1</p>
+          <h2 class="strat-doc-h2">L'algorithme LinkedIn en 2026</h2>
+          <div class="strat-stats">
+            <div class="strat-stat">
+              <div class="strat-stat-num">1,6%</div>
+              <div class="strat-stat-label">Portée organique des pages entreprises — les profils perso sont indispensables</div>
+            </div>
+            <div class="strat-stat">
+              <div class="strat-stat-num">2,75×</div>
+              <div class="strat-stat-label">Plus d'impressions sur un profil personnel vs une page entreprise</div>
+            </div>
+            <div class="strat-stat">
+              <div class="strat-stat-num">6,6%</div>
+              <div class="strat-stat-label">Taux d'engagement des carrousels PDF — le format le plus performant</div>
+            </div>
+            <div class="strat-stat">
+              <div class="strat-stat-num">+38%</div>
+              <div class="strat-stat-label">Posts texte long vs image seule — le format par défaut de tous les concurrents</div>
+            </div>
+          </div>
+          <p class="strat-doc-p"><strong>Règles à retenir&nbsp;:</strong> ne jamais mettre de lien externe dans le corps du post (pénalisation algorithme), maximum 3 hashtags, formats par taux d'engagement&nbsp;: carrousel PDF (6,6%), vidéo native courte &lt;30s (5,6%), post texte long 1300–3000 caractères, image seule (sous-performe le texte pur de 30% en 2026).</p>
+          <p class="strat-doc-p"><strong>Donnée clé (Edelman × LinkedIn B2B 2025)&nbsp;:</strong> 86% des décideurs préfèrent du contenu qui challenge leur vision. 79% recommandent plus facilement une entreprise qui prend position sur son secteur.</p>
+        </div>
+
+        <!-- PARTIE 2 — BENCHMARK -->
+        <div class="strat-doc-part">
+          <p class="strat-doc-part-label">Partie 2</p>
+          <h2 class="strat-doc-h2">Benchmark détaillé</h2>
+          <table class="strat-table">
+            <thead>
+              <tr>
+                <th>Entreprise</th>
+                <th>Abonnés</th>
+                <th>Ce qui manque</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr><td>Iconoclast</td><td>26 488</td><td>Angle éditorial, conversation</td></tr>
+              <tr><td>Partizan</td><td>20 647</td><td>Contenu process, thought leadership</td></tr>
+              <tr><td>Stink</td><td>22 131</td><td>Thought leadership, proactivité</td></tr>
+              <tr><td>Sixtine</td><td>8 852</td><td>Formats innovants, régularité</td></tr>
+            </tbody>
+          </table>
+          <p class="strat-doc-p"><strong>Le constat global&nbsp;:</strong> tout le monde fait pareil. Post de prod + liste de crédits + logo de marque. Ça fonctionne pour la diffusion, mais personne ne se différencie. <strong>Jan Belletti (Sixtine) est la seule exception dans tout le secteur</strong> — et il le fait depuis son profil personnel, pas depuis la page entreprise.</p>
+          <p class="strat-doc-p">Les posts les plus performants chez les concurrents sont systématiquement les "Welcome" (réalisateur ou talent qui repartage dans son réseau) et les awards systématiquement postés avec nom + projet précis.</p>
+        </div>
+
+        <!-- PARTIE 3 — CE QUI FONCTIONNE -->
+        <div class="strat-doc-part">
+          <p class="strat-doc-part-label">Partie 3</p>
+          <h2 class="strat-doc-h2">Ce qui fonctionne — et ce que tout le monde fait quand même</h2>
+          <div class="strat-axe">
+            <div class="strat-axe-num">Fonctionne</div>
+            <div class="strat-axe-title">Welcome réalisateur/talent</div>
+            <p class="strat-axe-text">La personne annoncée repartage → son réseau (pairs, dir de prod) voit le post. Format&nbsp;: photo du réalisateur (pas une capture d'écran de film) + texte qui dit <em>pourquoi</em> la maison est fière, pas juste "nous sommes ravis d'accueillir". Exemple&nbsp;: même annonce postée le même jour — page LA\PAC 43 likes, profil Jérôme Denis 65 likes.</p>
+          </div>
+          <div class="strat-axe">
+            <div class="strat-axe-num">Fonctionne</div>
+            <div class="strat-axe-title">Awards avec nom + projet précis</div>
+            <p class="strat-axe-text">Partizan le fait systématiquement. Exemple&nbsp;: BAFTA 2026 Best British Short Animation → 90 réactions. Triple amplification&nbsp;: réalisateurs taguées + réseau BAFTA + agence. LA\PAC a un palmarès historique de 100+ Lions qui peut être réactivé sous forme d'anniversaires ("Il y a 10 ans, ce film remportait son premier Lion").</p>
+          </div>
+          <div class="strat-axe">
+            <div class="strat-axe-num">À éviter</div>
+            <div class="strat-axe-title">Image seule + caption sans tags</div>
+            <p class="strat-axe-text">Portée minimale, aucune mécanique de diffusion. C'est le format par défaut de LA\PAC et de tous ses concurrents. Exemples sur la page LA\PAC&nbsp;: Tiger Beer/Jodeb 63 likes, Le\PAC/Arts&Sciences annonce stratégique 14 likes (coulée par le format — lien dans le corps du post).</p>
+          </div>
+        </div>
+
+        <!-- PARTIE 4 — STRATÉGIE ÉDITORIALE -->
+        <div class="strat-doc-part">
+          <p class="strat-doc-part-label">Partie 4</p>
+          <h2 class="strat-doc-h2">Stratégie éditoriale — 6 axes de contenu</h2>
+          <p class="strat-doc-p">La stratégie se répartit sur deux niveaux&nbsp;: la <strong>page officielle</strong> (vitrine, sobre, préstige, productions, roster, history, awards) et les <strong>profils personnels</strong> (analyses, coulisses, convictions — employee advocacy boosté 2,75× par l'algorithme).</p>
+
+          <div class="strat-axe">
+            <div class="strat-axe-num">Axe 01 — Page officielle</div>
+            <div class="strat-axe-title">"IT'S ALL ABOUT PEOPLE"</div>
+            <p class="strat-axe-text">Le capital humain comme actif éditorial. "Pourquoi on a décidé de travailler avec X" — un producteur explique en quoi l'univers du réalisateur correspond à ce que LA\PAC cherche (pas "nous sommes ravis d'accueillir" — un point de vue assumé). "Le premier film de..." Arrivées dans l'équipe à tous les niveaux. Format&nbsp;: photo + texte 500–800 caractères.</p>
+          </div>
+          <div class="strat-axe">
+            <div class="strat-axe-num">Axe 02 — Page officielle</div>
+            <div class="strat-axe-title">"L'HISTOIRE DE LA MAISON"</div>
+            <p class="strat-axe-text">50 ans = encyclopédie de l'évolution publicitaire et cinématographique. Aucun concurrent ne peut se permettre ce pilier. "Il y a X ans, ce film remportait son premier Lion." Archives des années 80/90/2000 avec contexte. Format&nbsp;: vidéo native pour les archives, carrousel PDF pour les anniversaires.</p>
+          </div>
+          <div class="strat-axe">
+            <div class="strat-axe-num">Axe 03 — Page officielle</div>
+            <div class="strat-axe-title">"L'EXPERTISE TECHNIQUE"</div>
+            <p class="strat-axe-text">Ne pas poster le film — poster le "comment". Carrousel 5–6 slides&nbsp;: plan impressionnant → setup lumière ou caméra → défi technique → solution → crédits avec tags. Variante VFX&nbsp;: before/after, layer by layer progressif, wipe vertical. Exemple LA\PAC existant&nbsp;: DS Automobiles BTS VFX, 44 likes avec post basique — en carrousel structuré, ce post aurait fait bien plus.</p>
+          </div>
+          <div class="strat-axe">
+            <div class="strat-axe-num">Axe 04 — Profils personnels</div>
+            <div class="strat-axe-title">"LA\PAC DÉCODE"</div>
+            <p class="strat-axe-text">Analyses des grandes tendances de la production avec le regard de quelqu'un dans le métier. Exemples&nbsp;: "Pourquoi les briefs pub sont devenus impossibles", "L'IA en post-prod&nbsp;: l'évolution du marché", "Le budget moyen d'un film pub a chuté de 40% en 10 ans". Format&nbsp;: post texte long (1300–3000 caractères) ou carrousel PDF.</p>
+          </div>
+          <div class="strat-axe">
+            <div class="strat-axe-num">Axe 05 — Profils personnels</div>
+            <div class="strat-axe-title">"COMMENT ON A FAIT ÇA"</div>
+            <p class="strat-axe-text">Les vrais enjeux de fabrication. "Ce film a été tourné en 3 jours dans 2 pays. Voici la logistique." "On avait 48h pour trouver un lieu de remplacement." "Produire éco-responsable pour une maison de luxe sans compromettre l'esthétique." Format&nbsp;: post texte + 1–2 images.</p>
+          </div>
+          <div class="strat-axe">
+            <div class="strat-axe-num">Axe 06 — Profils personnels</div>
+            <div class="strat-axe-title">"LA\PAC PREND POSITION"</div>
+            <p class="strat-axe-text">Prises de position sur la production audiovisuelle responsable, qualitative. "Ce qu'on exige sur nos tournages, et pourquoi ça fait de meilleurs films." "Ce qui fait qu'un réalisateur choisit une maison plutôt qu'une autre." Ces posts créent de la conversation, parfois du désaccord — exactement ce qui génère de la visibilité organique.</p>
+          </div>
+        </div>
+
+        <!-- PARTIE 5 — ÉVÉNEMENTS -->
+        <div class="strat-doc-part">
+          <p class="strat-doc-part-label">Partie 5</p>
+          <h2 class="strat-doc-h2">Événements comme matériel éditorial</h2>
+          <p class="strat-doc-p">Les événements ne sont pas une fin en soi&nbsp;: ils sont avant tout du matériel éditorial. Annonce avant, photos pendant, compte-rendu après&nbsp;: un événement bien couvert = 2 à 3 posts.</p>
+          <p class="strat-doc-p"><strong>"Plateau Ouvert"</strong> — 2 événements/an dans un lieu lié à la production. Structure&nbsp;: projection 2–3 productions récentes (20 min) + table ronde courte (20 min) + networking libre (1h30). Les dir de prod seniors viennent pour les gens, pas pour la prod. LA\PAC joue le rôle de catalyseur social.</p>
+          <p class="strat-doc-p"><strong>Avant-première interne</strong> — projection privée avant diffusion officielle. Simple à organiser, fort en perception (accès exclusif), génère un post de lancement naturel le jour J.</p>
+          <p class="strat-doc-p"><strong>Événements sectoriels existants</strong> — Cannes Lions, Semaine de la Pub, SXSW, Ciclope Festival. Chaque prise de parole externe = un post LinkedIn avec photos et compte-rendu.</p>
+        </div>
+
+        <!-- PARTIE 6 — PARTENARIATS -->
+        <div class="strat-doc-part">
+          <p class="strat-doc-part-label">Partie 6</p>
+          <h2 class="strat-doc-h2">Partenariats — 7 leviers</h2>
+          <p class="strat-doc-p">Un partenariat LinkedIn = collaboration éditoriale dans la durée, pas un post co-signé unique.</p>
+          <div class="strat-axe">
+            <div class="strat-axe-title">Ecoprod</div>
+            <p class="strat-axe-text">LA\PAC signe déjà leur charte. Série de posts "Produire responsable" — Ecoprod repartage, chaque repartage commenté expose le contenu à une deuxième audience sans diluer l'engagement du post original.</p>
+          </div>
+          <div class="strat-axe">
+            <div class="strat-axe-title">FEMIS / ESEC / Écoles de production</div>
+            <p class="strat-axe-text">Flux de jeunes talents, légitimité pédagogique. Interventions LA\PAC filmées et publiées. Panorama des métiers de la production.</p>
+          </div>
+          <div class="strat-axe">
+            <div class="strat-axe-title">EFAP / Battle de communication</div>
+            <p class="strat-axe-text">LA\PAC devient le <em>sujet</em> d'une Battle EFAP. Des centaines d'étudiants suivent la page, chaque équipe cite LA\PAC, pic de followers en quelques semaines. En tant qu'alumni EFAP, je peux facilement initier ce premier contact.</p>
+          </div>
+          <div class="strat-axe">
+            <div class="strat-axe-title">Agences créatives (BETC, Publicis…)</div>
+            <p class="strat-axe-text">Quand une campagne sort, LA\PAC publie côté production, l'agence repartage côté créa. Deux audiences touchées, engagement concentré.</p>
+          </div>
+          <div class="strat-axe">
+            <div class="strat-axe-title">Studios de post-production</div>
+            <p class="strat-axe-text">Le studio publie un post coulisses en taguant LA\PAC. LA\PAC repartage. Contenu authentique, zéro production supplémentaire.</p>
+          </div>
+          <div class="strat-axe">
+            <div class="strat-axe-title">Médias sectoriels (Packshotmag, CB News, Stratégies)</div>
+            <p class="strat-axe-text">Quand un média publie un article mentionnant LA\PAC, repartage avec commentaire. Signal de légitimité fort, zéro effort de production.</p>
+          </div>
+          <div class="strat-axe">
+            <div class="strat-axe-title">Arts &amp; Sciences / LE\PAC</div>
+            <p class="strat-axe-text">Signal de prestige international sous-exploité. Mise en avant des prods et talents issus du partenariat LE\PAC. Contenu croisé France/USA.</p>
+          </div>
+        </div>
+
+        <!-- PARTIE 7 — EMPLOYEE ADVOCACY -->
+        <div class="strat-doc-part">
+          <p class="strat-doc-part-label">Partie 7</p>
+          <h2 class="strat-doc-h2">Employee Advocacy — l'arme la plus sous-utilisée du secteur</h2>
+          <p class="strat-doc-p">Jan Belletti (Sixtine) a <strong>32 000 abonnés</strong> sur son profil personnel vs 8 852 sur la page Sixtine. Son profil pèse 3,6× l'audience de la page entreprise. Il est la voix de Sixtine sur LinkedIn bien plus que la page officielle.</p>
+          <p class="strat-doc-p">Posts les plus performants&nbsp;: rachat total de Coyote (<strong>564 réactions, 122 commentaires</strong>) — format texte émotionnel, récit personnel, ton de fierté d'entrepreneur. Welcome Marième LIBOTTE (<strong>101 réactions</strong>) — 2 lignes, performance due au tag de la personne. Tournage Marrakech (<strong>132 likes</strong>) — 4 photos de tournage + texte court enthousiaste.</p>
+          <p class="strat-doc-p">Les dirigeants et producteurs de LA\PAC sont l'équivalent potentiel de Jan Belletti — sauf que l'entreprise a 100 Lions et 50 ans d'histoire à raconter. Leur silence sur LinkedIn est un manque à gagner massif.</p>
+
+          <p class="strat-doc-h3">Profils à activer en priorité</p>
+          <div class="strat-person"><div class="strat-person-name">Jérôme Denis</div><div class="strat-person-role">CEO / Executive Producer</div><div class="strat-person-angle">Thought leadership, vision industrie, prises de position</div></div>
+          <div class="strat-person"><div class="strat-person-name">Hélène Ségol</div><div class="strat-person-role">Deputy Managing Director</div><div class="strat-person-angle">Stratégie d'entreprise, vision corporate, enjeux secteur</div></div>
+          <div class="strat-person"><div class="strat-person-name">Anna Roudaut</div><div class="strat-person-role">Executive Producer</div><div class="strat-person-angle">Coulisses de prod, process, challenges terrain</div></div>
+          <div class="strat-person"><div class="strat-person-name">Laurence Delbasty</div><div class="strat-person-role">Head of Communication</div><div class="strat-person-angle">Stratégie de marque, coulisses com, regard sur l'industrie créative</div></div>
+          <div class="strat-person"><div class="strat-person-name">Valentin Gozet</div><div class="strat-person-role">Art Director</div><div class="strat-person-angle">Direction créative, esthétique, choix artistiques</div></div>
+          <div class="strat-person"><div class="strat-person-name">Laurence Lelong</div><div class="strat-person-role">Head of Post-Production</div><div class="strat-person-angle">Angle technique — VFX, étalonnage, post — idéal pour les Breakdown posts</div></div>
+
+          <p class="strat-doc-p" style="margin-top:24px;">Mise en place d'un <strong>kit média mensuel</strong>&nbsp;: 2–3 idées de posts prêtes à adapter, angles éditoriaux, visuels optimisés — pas des textes imposés à copier-coller, mais des bases que chacun reformule avec sa propre voix, sur la base du volontariat. Activation du <strong>LinkedIn Creator Mode</strong> recommandée pour chaque profil volontaire (le bouton principal passe de "Se connecter" à "Suivre" — portée maximisée). Chaque post intègre un tag @LA\PAC + repost depuis la page officielle quand le post personnel performe.</p>
+        </div>
+
+        <!-- PARTIE 8 — CROSS-COMPTES -->
+        <div class="strat-doc-part">
+          <p class="strat-doc-part-label">Partie 8</p>
+          <h2 class="strat-doc-h2">Stratégie cross-comptes — l'écosystème LA\PAC</h2>
+          <p class="strat-doc-p">C'est l'avantage structurel que LA\PAC a sur la plupart de ses concurrents&nbsp;: quatre filiales avec des positionnements complémentaires, chacune avec sa propre audience potentielle. Wanda a le même type de structure, mais n'en fait rien sur LinkedIn.</p>
+          <table class="strat-table">
+            <thead>
+              <tr><th>Filiale</th><th>Cible LinkedIn</th><th>Audience spécifique</th></tr>
+            </thead>
+            <tbody>
+              <tr><td>LA\PAC</td><td>Dir de prod, DGA, agences</td><td>Professionnels du secteur</td></tr>
+              <tr><td>VERY\CONTENT</td><td>Social media managers, brand managers</td><td>Digital / marketing</td></tr>
+              <tr><td>TERRE\TV</td><td>Éditeurs, diffuseurs, plateformes</td><td>Médias et streaming</td></tr>
+              <tr><td>2001.ART</td><td>Dir artistiques, maisons de luxe</td><td>Luxe et mode</td></tr>
+            </tbody>
+          </table>
+          <p class="strat-doc-p"><strong>La mécanique&nbsp;:</strong> chaque entité publie de façon indépendante sur son propre territoire. Les pages se likent et se commentent mutuellement de façon naturelle — ça suffit pour que leurs abonnés respectifs croisent l'existence des autres. Sur un projet commun, chacune publie son angle propre et se tague si c'est naturel. Un dir artistique qui suit 2001.ART croise LA\PAC dans les interactions. Il comprend qu'il y a un groupe derrière, avec une capacité de prod complète. Ce message ne s'énonce jamais explicitement. <strong>Il se lit dans les connexions entre comptes.</strong></p>
+        </div>
+
+        <!-- SOURCES -->
+        <div class="strat-sources">
+          <p class="strat-sources-label">Sources</p>
+          <p class="strat-source">1,6% portée organique des pages — <a href="https://www.tryordinal.com/blog/the-declining-reach-of-linkedin-company-pages" target="_blank">Ordinal, 2026</a></p>
+          <p class="strat-source">6,6% engagement carrousels PDF / 5,6% vidéo native — <a href="https://www.socialinsider.io/social-media-benchmarks/linkedin" target="_blank">Socialinsider, LinkedIn Benchmarks 2025</a></p>
+          <p class="strat-source">+38% posts texte longs / pénalisation liens externes / hashtags &gt;3 — <a href="https://brixongroup.com/en/linkedin-algorithm-dos-donts-for-organic-visibility-in-the-b2b-sector" target="_blank">Brixon Group, 2026</a></p>
+          <p class="strat-source">86% et 79% des décideurs / 2,75× profils perso — <a href="https://www.edelman.com/expertise/Business-Marketing/2025-b2b-thought-leadership-report" target="_blank">Edelman × LinkedIn, B2B Thought Leadership Impact Report 2025</a></p>
+          <p class="strat-source">Jan Belletti 32 000 abonnés / 564 réactions rachat Coyote — <a href="https://www.linkedin.com/in/jan-belletti-994ba142/" target="_blank">LinkedIn, mars 2026</a></p>
+          <p class="strat-source">Chiffres d'abonnés concurrents — relevés directement sur les pages LinkedIn publiques, mars 2026</p>
+        </div>
+
+      </div><!-- .strat-acc-body -->
+    </div><!-- .strat-accordion -->
+
+  </div><!-- .strat-inner -->
+</div>
+
 <script>
 /* ─────────────────────────────────────
    THUMBNAILS DATA
@@ -1052,10 +1499,15 @@ const MAP = [
 
 function buildGrid(){}
 
+function toggleAcc(){
+  const acc = document.getElementById('strat-accordion');
+  acc.classList.toggle('open');
+}
+
 /* ─────────────────────────────────────
    PAGE TRANSITIONS
 ───────────────────────────────────── */
-const PAGES = ['home','welcome','lettre','cv','contact'];
+const PAGES = ['home','welcome','lettre','cv','contact','strategie'];
 let current = 'home';
 let currentUser = null;
 let welcomeShown = false;
@@ -1074,7 +1526,7 @@ const PASSWORDS = {
 function go(name) {
   if (!PAGES.includes(name)) return;
   // Show welcome once on first lettre/cv/contact nav after login
-  if (currentUser && !welcomeShown && ['lettre','cv','contact'].includes(name)) {
+  if (currentUser && !welcomeShown && ['lettre','cv','contact','strategie'].includes(name)) {
     welcomeShown = true;
     _welcomeDest = name;
     go('welcome');
@@ -1093,7 +1545,7 @@ function go(name) {
     document.body.className = 'p-' + (currentUser ? currentUser + ' ' : '') + 'p-' + name;
     document.body.className = 'p-' + name + (currentUser ? ' user-' + currentUser : '');
   }
-  ['lettre','cv','contact'].forEach(p => {
+  ['lettre','cv','contact','strategie'].forEach(p => {
     document.getElementById('nl-' + p).classList.toggle('active', p === name);
   });
   current = name;
