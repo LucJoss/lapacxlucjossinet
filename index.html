@@ -2024,7 +2024,7 @@ document.addEventListener('mousemove', e => {
 document.addEventListener('mouseover', e => {
   const tag = e.target.tagName;
   const isText = TEXT_TAGS.includes(tag) && e.target.childElementCount === 0 && e.target.textContent.trim().length > 0;
-  const isBigZone = !!e.target.closest('.ct-title, .ct-quote, .lettre-q, .lettre-sign, .li-title, .li-sub, .cv-title, .cv-date, .cv-org, .cv-desc, .cv-tags, .sk-cat-title, .sk-pills, .cv-name, .cv-role, .nav-link, .logo, .strat-levier-title, .strat-levier-text, .strat-doc-p, .strat-doc-h2, .strat-doc-h3, .strat-doc-h4, .strat-callout-text, .strat-callout-title, .strat-comp-text, .strat-comp-name, .strat-label, .strat-intro, .strat-subtitle, .strat-title, .strat-eyebrow, .strat-axe-title, .strat-axe-text, .strat-doc-part-label, .strat-acc-label, .strat-source, .strat-sources-label, td, th');
+  const isBigZone = e.target.childElementCount === 0 && e.target.textContent.trim().length > 0 && !!e.target.closest('.ct-title, .ct-quote, .lettre-q, .lettre-sign, .li-title, .li-sub, .cv-title, .cv-date, .cv-org, .cv-desc, .cv-tags, .sk-cat-title, .sk-pills, .cv-name, .cv-role, .nav-link, .logo, .strat-levier-title, .strat-levier-text, .strat-doc-p, .strat-doc-h2, .strat-doc-h3, .strat-doc-h4, .strat-callout-text, .strat-callout-title, .strat-comp-text, .strat-comp-name, .strat-label, .strat-intro, .strat-subtitle, .strat-title, .strat-eyebrow, .strat-axe-title, .strat-axe-text, .strat-doc-part-label, .strat-acc-label, .strat-source, .strat-sources-label, td, th');
   if (isText || isBigZone) {
     cursor.classList.add('big');
   } else {
