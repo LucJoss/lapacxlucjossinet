@@ -542,12 +542,20 @@ body.p-strategie #nav{background:#000;color:#fff;border-bottom:1px solid rgba(25
 .strat-levier-text em{font-style:italic;color:rgba(255,255,255,.82);}
 
 /* ─── ACCORDION ANALYSE COMPLÈTE ─── */
-.strat-accordion{margin-top:80px;border-top:2px solid rgba(255,255,255,.2);}
+.strat-accordion{margin-top:80px;}
 .strat-acc-trigger{
-  width:100%;background:none;border:none;outline:none;
-  display:flex;align-items:center;justify-content:space-between;
-  padding:28px 0;cursor:none;font-family:inherit;
+  background:none;border:none;outline:none;
+  display:flex;align-items:center;gap:20px;
+  padding:0;cursor:none;font-family:inherit;flex:1;
 }
+.strat-print-btn{
+  background:none;border:1px solid rgba(255,255,255,.2);outline:none;
+  font-family:inherit;font-size:9px;font-weight:700;letter-spacing:.2em;
+  text-transform:uppercase;color:rgba(255,255,255,.5);
+  padding:8px 14px;cursor:none;
+  transition:border-color .2s,color .2s;white-space:nowrap;
+}
+.strat-print-btn:hover{border-color:#ff0000;color:#ff0000;}
 .strat-acc-trigger:hover .strat-acc-label{color:#ff0000;}
 .strat-acc-label{
   font-size:11px;font-weight:900;letter-spacing:.25em;
@@ -630,6 +638,62 @@ body.p-strategie #nav{background:#000;color:#fff;border-bottom:1px solid rgba(25
   .strat-stats{grid-template-columns:1fr;}
   .strat-table{font-size:11px;}
   .strat-table th,.strat-table td{padding:10px 6px;}
+}
+
+/* ─── PRINT — Analyse complète ─── */
+@media print{
+  *{-webkit-print-color-adjust:exact;print-color-adjust:exact;}
+  html,body{overflow:visible!important;height:auto!important;width:auto!important;background:#fff!important;}
+  #cursor,#nav,#page-home,#page-lettre,#page-cv,#page-contact,#page-welcome{display:none!important;}
+  #page-strategie{position:static!important;opacity:1!important;pointer-events:all!important;background:#fff!important;overflow:visible!important;}
+  .strat-inner{max-width:100%;padding:40px 60px!important;}
+  /* Cacher le résumé, ne garder que l'analyse */
+  .strat-eyebrow,.strat-title,.strat-subtitle,.strat-section,.strat-accordion>.strat-acc-trigger,.strat-print-btn{display:none!important;}
+  /* Afficher le body de l'accordion même fermé */
+  .strat-acc-body{display:block!important;padding:0!important;border:none!important;}
+  /* Typographie print — fond blanc texte noir */
+  .strat-doc-part{border-top:1px solid #e0e0e0!important;padding-top:32px!important;margin-bottom:40px!important;page-break-inside:avoid;}
+  .strat-doc-part:first-child{border-top:none!important;padding-top:0!important;}
+  .strat-doc-part-label{color:#cc0000!important;border-left:3px solid #cc0000!important;padding:4px 0 4px 10px!important;font-size:9px!important;margin-bottom:12px!important;}
+  .strat-doc-h2{color:#000!important;font-size:17px!important;margin-bottom:12px!important;}
+  .strat-doc-h3{color:#000!important;font-size:12px!important;margin:20px 0 8px!important;}
+  .strat-doc-p{color:#1a1a1a!important;font-size:11px!important;line-height:1.75!important;}
+  .strat-doc-p strong{color:#000!important;}
+  .strat-doc-p a{color:#333!important;text-decoration:underline!important;}
+  .strat-doc-list{padding-left:18px!important;}
+  .strat-stats{background:#f0f0f0!important;gap:1px!important;}
+  .strat-stat{background:#fff!important;padding:14px!important;}
+  .strat-stat-num{color:#cc0000!important;font-size:24px!important;}
+  .strat-stat-label{color:#444!important;}
+  .strat-table{font-size:10px!important;}
+  .strat-table th{color:#555!important;border-bottom:2px solid #ccc!important;}
+  .strat-table td{color:#1a1a1a!important;border-bottom:1px solid #eee!important;}
+  .strat-table td:first-child{color:#000!important;}
+  .strat-axe{border-bottom:1px solid #eee!important;}
+  .strat-axe:first-child{border-top:1px solid #eee!important;}
+  .strat-axe-num{color:#cc0000!important;}
+  .strat-axe-title{color:#000!important;}
+  .strat-axe-text{color:#1a1a1a!important;}
+  .strat-person-name{color:#000!important;}
+  .strat-person-role{color:#555!important;}
+  .strat-person-angle{color:#1a1a1a!important;}
+  .strat-sources{border-top:1px solid #e0e0e0!important;}
+  .strat-sources-label{color:#888!important;}
+  .strat-source{color:#555!important;}
+  .strat-source a{color:#333!important;}
+  /* En-tête print */
+  .strat-acc-body::before{
+    content:"Stratégie LinkedIn LA\\PAC — Analyse complète";
+    display:block;font-family:'Helvetica Neue',Arial,sans-serif;
+    font-size:22px;font-weight:900;letter-spacing:-.02em;color:#000;
+    margin-bottom:6px;
+  }
+  .strat-acc-body::after{
+    content:"Préparé par Luc Jossinet — Mars 2026";
+    display:block;font-family:'Helvetica Neue',Arial,sans-serif;
+    font-size:10px;color:#888;letter-spacing:.1em;text-transform:uppercase;
+    margin-bottom:40px;padding-bottom:24px;border-bottom:2px solid #000;
+  }
 }
 
 /* ─── SCROLLBARS ─── */
@@ -1237,10 +1301,13 @@ body.user-jerome   .welcome-hint{color:rgba(255,255,255,.35);}
 
     <!-- ACCORDION ANALYSE COMPLÈTE -->
     <div class="strat-accordion" id="strat-accordion">
-      <button class="strat-acc-trigger" onclick="toggleAcc()" type="button">
-        <span class="strat-acc-label">Analyse complète - 8 parties</span>
-        <span class="strat-acc-arrow">↓</span>
-      </button>
+      <div style="display:flex;align-items:center;justify-content:space-between;padding:28px 0;border-top:2px solid rgba(255,255,255,.2);">
+        <button class="strat-acc-trigger" onclick="toggleAcc()" type="button" style="padding:0;border-top:none;">
+          <span class="strat-acc-label">Analyse complète - 8 parties</span>
+          <span class="strat-acc-arrow">↓</span>
+        </button>
+        <button class="strat-print-btn" onclick="printAnalyse()" type="button">↓ PDF</button>
+      </div>
       <div class="strat-acc-body" id="strat-acc-body">
 
         <!-- CONTEXTE -->
@@ -1717,6 +1784,9 @@ function buildGrid(){}
 function toggleAcc(){
   const acc = document.getElementById('strat-accordion');
   acc.classList.toggle('open');
+}
+function printAnalyse(){
+  window.print();
 }
 
 /* ─────────────────────────────────────
