@@ -1256,11 +1256,11 @@ body.user-jerome   .welcome-hint{color:rgba(255,255,255,.35);}
     <!-- ACCORDION ANALYSE COMPLÈTE -->
     <div class="strat-accordion" id="strat-accordion">
       <div style="display:flex;align-items:center;justify-content:space-between;padding:28px 0;border-top:2px solid rgba(255,255,255,.2);">
-        <button class="strat-acc-trigger" onclick="toggleAcc()" type="button" style="padding:0;border-top:none;">
+        <button class="strat-acc-trigger" onclick="toggleAcc();notifyAction('Analyse complète - 8 parties');" type="button" style="padding:0;border-top:none;">
           <span class="strat-acc-label">Analyse complète - 8 parties</span>
           <span class="strat-acc-arrow">↓</span>
         </button>
-        <a class="strat-print-btn" href="strategie-linkedin-lapac.pdf" download="Stratégie LinkedIn LA-PAC — Luc Jossinet.pdf">↓ Version PDF téléchargeable</a>
+        <a class="strat-print-btn" href="strategie-linkedin-lapac.pdf" download="Stratégie LinkedIn LA-PAC — Luc Jossinet.pdf" onclick="notifyAction('Téléchargement PDF');">↓ Version PDF téléchargeable</a>
       </div>
       <div class="strat-acc-body" id="strat-acc-body">
 
@@ -2081,6 +2081,16 @@ function checkPassword() {
     input.value = '';
     setTimeout(() => err.classList.remove('show'), 2000);
   }
+}
+
+function notifyAction(action) {
+  const userName = currentUser ? (USERS[currentUser] || currentUser) : 'Visiteur';
+  const now = new Date().toLocaleString('fr-FR', { timeZone: 'Europe/Paris' });
+  fetch('https://ntfy.sh/lapac-luc-jossinet-9f3k2', {
+    method: 'POST',
+    body: userName + ' — ' + action + ' — ' + now,
+    headers: { 'Title': 'Action sur lapacxlucjossinet.fr', 'Priority': 'default', 'Tags': 'eyes' }
+  }).catch(() => {});
 }
 
 /* ─────────────────────────────────────
