@@ -1,16 +1,27 @@
+const https = require('https');
+
 module.exports = async function handler(req, res) {
   if (req.method !== 'POST') return res.status(405).end();
   const { message, title, tags, priority } = req.body || {};
-  try {
-    await fetch(`https://ntfy.sh/${process.env.NTFY_TOPIC}`, {
+  const data = message || '';
+
+  await new Promise((resolve) => {
+    const options = {
+      hostname: 'ntfy.sh',
+      path: '/' + process.env.NTFY_TOPIC,
       method: 'POST',
-      body: message || '',
       headers: {
         'Title': title || 'lapacxlucjossinet.fr',
         'Priority': priority || 'default',
-        'Tags': tags || 'bell'
+        'Tags': tags || 'bell',
+        'Content-Length': Buffer.byteLength(data)
       }
-    });
-  } catch (e) {}
+    };
+    const r = https.request(options, resolve);
+    r.on('error', resolve);
+    r.write(data);
+    r.end();
+  });
+
   res.status(200).end();
 };
