@@ -2061,7 +2061,7 @@ function checkPassword() {
     // Notification de connexion
     const userName = USERS[userKey] || userKey;
     const now = new Date().toLocaleString('fr-FR', { timeZone: 'Europe/Paris' });
-    fetch('/api/notify', {
+    fetch('https://www.lapacxlucjossinet.fr/api/notify', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ message: userName + ' vient de se connecter — ' + now, title: 'Connexion sur lapacxlucjossinet.fr', priority: 'high', tags: 'key' })
@@ -2086,7 +2086,7 @@ function checkPassword() {
 function notifyAction(action) {
   const userName = currentUser ? (USERS[currentUser] || currentUser) : 'Visiteur';
   const now = new Date().toLocaleString('fr-FR', { timeZone: 'Europe/Paris' });
-  fetch('/api/notify', {
+  fetch('https://www.lapacxlucjossinet.fr/api/notify', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ message: userName + ' — ' + action + ' — ' + now, title: 'Action sur lapacxlucjossinet.fr', priority: 'default', tags: 'eyes' })
