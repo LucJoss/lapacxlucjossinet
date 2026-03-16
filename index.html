@@ -2061,10 +2061,10 @@ function checkPassword() {
     // Notification de connexion
     const userName = USERS[userKey] || userKey;
     const now = new Date().toLocaleString('fr-FR', { timeZone: 'Europe/Paris' });
-    fetch('https://ntfy.sh/lapac-luc-jossinet-9f3k2', {
+    fetch('/api/notify', {
       method: 'POST',
-      body: userName + ' vient de se connecter — ' + now,
-      headers: { 'Title': 'Connexion sur lapacxlucjossinet.fr', 'Priority': 'high', 'Tags': 'key' }
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ message: userName + ' vient de se connecter — ' + now, title: 'Connexion sur lapacxlucjossinet.fr', priority: 'high', tags: 'key' })
     }).catch(() => {});
     loadAdminContent();
     const screen = document.getElementById('password-screen');
@@ -2086,10 +2086,10 @@ function checkPassword() {
 function notifyAction(action) {
   const userName = currentUser ? (USERS[currentUser] || currentUser) : 'Visiteur';
   const now = new Date().toLocaleString('fr-FR', { timeZone: 'Europe/Paris' });
-  fetch('https://ntfy.sh/lapac-luc-jossinet-9f3k2', {
+  fetch('/api/notify', {
     method: 'POST',
-    body: userName + ' — ' + action + ' — ' + now,
-    headers: { 'Title': 'Action sur lapacxlucjossinet.fr', 'Priority': 'default', 'Tags': 'eyes' }
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ message: userName + ' — ' + action + ' — ' + now, title: 'Action sur lapacxlucjossinet.fr', priority: 'default', tags: 'eyes' })
   }).catch(() => {});
 }
 
