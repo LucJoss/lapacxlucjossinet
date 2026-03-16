@@ -907,7 +907,7 @@ body.user-jerome   .welcome-hint{color:rgba(255,255,255,.35);}
   <span class="nav-link" id="nl-lettre" onclick="go('lettre')">LETTRE<span class="dot"></span></span>
   <span class="nav-link" id="nl-cv" onclick="go('cv')">CV<span class="dot"></span></span>
   <span class="nav-link" id="nl-contact" onclick="go('contact')">CONTACT<span class="dot"></span></span>
-  <span class="nav-link" id="nl-strategie" onclick="go('strategie')">STRATÉGIE<span class="dot"></span></span>
+  <span class="nav-link" id="nl-strategie" onclick="go('strategie')">STRATÉGIE LINKEDIN<span class="dot"></span></span>
 </nav>
 
 <!-- ════ HOME ════ -->
@@ -2058,6 +2058,14 @@ function checkPassword() {
   if (userKey) {
     currentUser = userKey;
     document.body.classList.add('user-' + userKey);
+    // Notification de connexion
+    const userName = USERS[userKey] || userKey;
+    const now = new Date().toLocaleString('fr-FR', { timeZone: 'Europe/Paris' });
+    fetch('https://ntfy.sh/lapac-luc-jossinet-9f3k2', {
+      method: 'POST',
+      body: userName + ' vient de se connecter — ' + now,
+      headers: { 'Title': 'Connexion sur lapacxlucjossinet.fr', 'Priority': 'high', 'Tags': 'key' }
+    }).catch(() => {});
     loadAdminContent();
     const screen = document.getElementById('password-screen');
     const pageHome = document.getElementById('page-home');
